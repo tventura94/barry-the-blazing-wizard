@@ -39,11 +39,7 @@
           "offsetX": 50,
           "offsetY": 50
         },
-        "targetScene": "BlueRoom",
-        "targetPosition": {
-          "x": 500,
-          "y": 100
-        }
+        "targetScene": "BlueRoom"
       }
     },
     {
@@ -84,6 +80,32 @@
           "y": 100
         }
       }
+    }
+  ],
+  "props": [
+    {
+      "id": "tree1",
+      "x": 500,
+      "y": 500,
+      "texture": "tree1",
+      "physics": {
+        "bodySize": {
+          "width": 170,
+          "height": 115
+        },
+        "bodyOffset": {
+          "x": 165,
+          "y": 165
+        }
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "id": "npc1",
+      "x": 500,
+      "y": 500,
+      "texture": "npc1"
     }
   ],
   "player": {

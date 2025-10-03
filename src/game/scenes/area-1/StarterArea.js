@@ -1,13 +1,13 @@
 import { Scene } from "phaser";
-import { SceneManager } from "../managers/SceneManager.js";
+import { SceneManager } from "../../managers/SceneManager.js";
 
-export class Game extends Scene {
+export class StarterArea extends Scene {
   constructor() {
-    super("Game");
+    super("StarterArea");
   }
 
   async create() {
-    console.log("Game scene create() started");
+    console.log("StarterArea scene create() started");
     this.cameras.main.setBackgroundColor(0x00ff00);
 
     // Clear any existing scene manager and objects
@@ -28,7 +28,7 @@ export class Game extends Scene {
 
     // Add screen edge detection
     this.setupScreenEdges();
-    console.log("Game scene create() completed");
+    console.log("StarterArea scene create() completed");
   }
 
   setupScreenEdges() {

@@ -1,9 +1,9 @@
 import { Boot } from "./scenes/Boot";
-import { Game as MainGame } from "./scenes/Game";
+import { StarterArea as MainGame } from "./scenes/area-1/StarterArea";
 import { GameOver } from "./scenes/GameOver";
 import { MainMenu } from "./scenes/MainMenu";
 import { Preloader } from "./scenes/Preloader";
-import { BlueRoom } from "./scenes/BlueRoom";
+import { BlueRoom } from "./scenes/area-1/BlueRoom";
 import { AUTO, Game } from "phaser";
 
 //  Find out more information about the Game Config at:

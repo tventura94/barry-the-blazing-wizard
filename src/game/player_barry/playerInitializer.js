@@ -29,6 +29,16 @@ export class PlayerInitializer {
     // Set up physics body for the player
     this.player.sprite.body.setSize(32, 32); // Adjust collision box size as needed
 
+    // Debug logging
+    console.log("Player sprite created with physics body:", {
+      immovable: this.player.sprite.body.immovable,
+      size: {
+        width: this.player.sprite.body.width,
+        height: this.player.sprite.body.height,
+      },
+      position: { x: this.player.sprite.x, y: this.player.sprite.y },
+    });
+
     // Set up keyboard input for movement
     this.cursors = this.scene.input.keyboard.createCursorKeys();
     this.wasd = this.scene.input.keyboard.addKeys("W,S,A,D");

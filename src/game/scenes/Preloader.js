@@ -31,6 +31,7 @@ export class Preloader extends Scene {
     this.load.image("background", "bg.png");
     this.load.image("building1", "buildings/building1.png");
     this.load.image("building1-door-open", "buildings/building1-door-open.png");
+    this.load.image("tree1", "props/tree1.png");
 
     // Load the wizard character sprite sheet
     this.load.spritesheet("wizard-walk", "barry-sprites/walk.png", {

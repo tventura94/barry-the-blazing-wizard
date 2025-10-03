@@ -1,5 +1,5 @@
 import { Scene } from "phaser";
-import { PlayerInitializer } from "../player_barry/playerInitializer.js";
+import { PlayerInitializer } from "../../player_barry/playerInitializer.js";
 
 export class BlueRoom extends Scene {
   constructor() {
@@ -50,7 +50,7 @@ export class BlueRoom extends Scene {
 
       // Manual screen edge detection (backup method)
       if (this.player.sprite.y < 0) {
-        this.scene.start("Game");
+        this.scene.start("StarterArea");
       }
     }
   }
