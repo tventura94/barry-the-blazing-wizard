@@ -56,6 +56,11 @@ export class SceneManager {
 
     // Set up collisions with custom callback
     this.scene.buildings.forEach((building) => {
+      console.log(
+        `Setting up collision between player and building ${building.buildingId}`
+      );
+
+      // Main building physics body
       this.scene.physics.add.collider(
         this.scene.player.sprite,
         building,
@@ -63,6 +68,27 @@ export class SceneManager {
         null,
         this.scene
       );
+
+      // Additional collision bodies for multiple collision areas
+      if (building.additionalBodies && building.additionalBodies.length > 0) {
+        building.additionalBodies.forEach((additionalBody, index) => {
+          console.log(`  Setting up collision with additional body ${index}`);
+          this.scene.physics.add.collider(
+            this.scene.player.sprite,
+            additionalBody,
+            this.handlePlayerBuildingCollision.bind(this),
+            null,
+            this.scene
+          );
+        });
+      }
+
+      // Pass-through bodies don't need collision detection, they handle z-index layering
+      if (building.passThroughBodies && building.passThroughBodies.length > 0) {
+        console.log(
+          `  Pass-through bodies: ${building.passThroughBodies.length} (no collision detection)`
+        );
+      }
 
       // Set up door interaction zone collisions (for scene transitions)
       if (building.doorInteractionZone) {
@@ -169,7 +195,7 @@ export class SceneManager {
 
   // Check pass-through areas for z-index layering
   checkPassThroughAreas() {
-    if (!this.scene.player || !this.scene.player.sprite || !this.scene.props) {
+    if (!this.scene.player || !this.scene.player.sprite) {
       return;
     }
 
@@ -178,50 +204,103 @@ export class SceneManager {
     let isInPassThroughArea = false;
 
     // Check all props for pass-through areas
-    this.scene.props.forEach((prop) => {
-      if (prop.passThroughBodies && prop.passThroughBodies.length > 0) {
-        prop.passThroughBodies.forEach((passThroughBody) => {
-          const bodyX = passThroughBody.x;
-          const bodyY = passThroughBody.y;
-          const bodyWidth = passThroughBody.displayWidth;
-          const bodyHeight = passThroughBody.displayHeight;
+    if (this.scene.props) {
+      this.scene.props.forEach((prop) => {
+        if (prop.passThroughBodies && prop.passThroughBodies.length > 0) {
+          prop.passThroughBodies.forEach((passThroughBody) => {
+            const bodyX = passThroughBody.x;
+            const bodyY = passThroughBody.y;
+            const bodyWidth = passThroughBody.displayWidth;
+            const bodyHeight = passThroughBody.displayHeight;
 
-          // Check if player is within the pass-through area bounds
-          const leftBound = bodyX - bodyWidth / 2;
-          const rightBound = bodyX + bodyWidth / 2;
-          const topBound = bodyY - bodyHeight / 2;
-          const bottomBound = bodyY + bodyHeight / 2;
+            // Check if player is within the pass-through area bounds
+            const leftBound = bodyX - bodyWidth / 2;
+            const rightBound = bodyX + bodyWidth / 2;
+            const topBound = bodyY - bodyHeight / 2;
+            const bottomBound = bodyY + bodyHeight / 2;
 
-          // Debug logging
-          if (Math.random() < 0.01) {
-            // Only log occasionally to avoid spam
-            console.log(`Pass-through area ${prop.propId}:`, {
-              bodyPos: { x: bodyX, y: bodyY },
-              bodySize: { width: bodyWidth, height: bodyHeight },
-              bounds: {
-                left: leftBound,
-                right: rightBound,
-                top: topBound,
-                bottom: bottomBound,
-              },
-              playerPos: { x: playerX, y: playerY },
-            });
-          }
+            // Debug logging
+            if (Math.random() < 0.01) {
+              // Only log occasionally to avoid spam
+              console.log(`Pass-through area ${prop.propId}:`, {
+                bodyPos: { x: bodyX, y: bodyY },
+                bodySize: { width: bodyWidth, height: bodyHeight },
+                bounds: {
+                  left: leftBound,
+                  right: rightBound,
+                  top: topBound,
+                  bottom: bottomBound,
+                },
+                playerPos: { x: playerX, y: playerY },
+              });
+            }
 
-          if (
-            playerX >= leftBound &&
-            playerX <= rightBound &&
-            playerY >= topBound &&
-            playerY <= bottomBound
-          ) {
-            isInPassThroughArea = true;
-            console.log(
-              `Player is in pass-through area of prop ${prop.propId}`
-            );
-          }
-        });
-      }
-    });
+            if (
+              playerX >= leftBound &&
+              playerX <= rightBound &&
+              playerY >= topBound &&
+              playerY <= bottomBound
+            ) {
+              isInPassThroughArea = true;
+              console.log(
+                `Player is in pass-through area of prop ${prop.propId}`
+              );
+            }
+          });
+        }
+      });
+    }
+
+    // Check all buildings for pass-through areas
+    if (this.scene.buildings) {
+      this.scene.buildings.forEach((building) => {
+        if (
+          building.passThroughBodies &&
+          building.passThroughBodies.length > 0
+        ) {
+          building.passThroughBodies.forEach((passThroughBody) => {
+            const bodyX = passThroughBody.x;
+            const bodyY = passThroughBody.y;
+            const bodyWidth = passThroughBody.displayWidth;
+            const bodyHeight = passThroughBody.displayHeight;
+
+            // Check if player is within the pass-through area bounds
+            const leftBound = bodyX - bodyWidth / 2;
+            const rightBound = bodyX + bodyWidth / 2;
+            const topBound = bodyY - bodyHeight / 2;
+            const bottomBound = bodyY + bodyHeight / 2;
+
+            // Debug logging
+            if (Math.random() < 0.01) {
+              // Only log occasionally to avoid spam
+              console.log(`Pass-through area ${building.buildingId}:`, {
+                bodyPos: { x: bodyX, y: bodyY },
+                bodySize: { width: bodyWidth, height: bodyHeight },
+                bounds: {
+                  left: leftBound,
+                  right: rightBound,
+                  top: topBound,
+                  bottom: bottomBound,
+                },
+                playerPos: { x: playerX, y: playerY },
+              });
+            }
+
+            if (
+              playerX >= leftBound &&
+              playerX <= rightBound &&
+              playerY >= topBound &&
+              playerY <= bottomBound
+            ) {
+              isInPassThroughArea = true;
+              console.log(
+                `Player is in pass-through area of building ${building.buildingId}`
+              );
+            }
+          });
+        }
+      });
+    }
 
     // Adjust player depth based on pass-through areas
     if (isInPassThroughArea) {
