@@ -186,12 +186,38 @@ export class SceneManager {
           const bodyWidth = passThroughBody.displayWidth;
           const bodyHeight = passThroughBody.displayHeight;
 
-          // Check if player is within the pass-through area
-          const distanceX = Math.abs(playerX - bodyX);
-          const distanceY = Math.abs(playerY - bodyY);
+          // Check if player is within the pass-through area bounds
+          const leftBound = bodyX - bodyWidth / 2;
+          const rightBound = bodyX + bodyWidth / 2;
+          const topBound = bodyY - bodyHeight / 2;
+          const bottomBound = bodyY + bodyHeight / 2;
 
-          if (distanceX < bodyWidth / 2 && distanceY < bodyHeight / 2) {
+          // Debug logging
+          if (Math.random() < 0.01) {
+            // Only log occasionally to avoid spam
+            console.log(`Pass-through area ${prop.propId}:`, {
+              bodyPos: { x: bodyX, y: bodyY },
+              bodySize: { width: bodyWidth, height: bodyHeight },
+              bounds: {
+                left: leftBound,
+                right: rightBound,
+                top: topBound,
+                bottom: bottomBound,
+              },
+              playerPos: { x: playerX, y: playerY },
+            });
+          }
+
+          if (
+            playerX >= leftBound &&
+            playerX <= rightBound &&
+            playerY >= topBound &&
+            playerY <= bottomBound
+          ) {
             isInPassThroughArea = true;
+            console.log(
+              `Player is in pass-through area of prop ${prop.propId}`
+            );
           }
         });
       }
@@ -199,11 +225,11 @@ export class SceneManager {
 
     // Adjust player depth based on pass-through areas
     if (isInPassThroughArea) {
-      // Player is under something, put them behind it
-      this.scene.player.sprite.setDepth(500);
+      // Player is under something, put them behind it (lower z-index)
+      this.scene.player.sprite.setDepth(50);
     } else {
-      // Player is in normal area, put them in front
-      this.scene.player.sprite.setDepth(100);
+      // Player is in normal area, put them in front (higher z-index)
+      this.scene.player.sprite.setDepth(150);
     }
   }
 

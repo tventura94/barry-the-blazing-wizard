@@ -36,6 +36,9 @@ export class PropManager {
       // Set the prop ID for reference
       prop.propId = propData.id;
 
+      // Set initial depth for the prop (will be adjusted based on pass-through areas)
+      prop.setDepth(100);
+
       // Handle multiple physics bodies if specified
       if (
         propData.physics &&
@@ -149,8 +152,8 @@ export class PropManager {
         // Make it invisible
         passThroughBody.setVisible(false);
 
-        // Set depth to be above player (higher z-index)
-        passThroughBody.setDepth(1000);
+        // Set depth to be above player (higher z-index) when player is not in pass-through area
+        passThroughBody.setDepth(200);
 
         // Debug visualization for pass-through bodies (temporarily enabled)
         const debugGraphics = this.scene.add.graphics();
