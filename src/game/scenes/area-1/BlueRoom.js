@@ -24,7 +24,7 @@ export class BlueRoom extends Scene {
     this.playerInitializer.createPlayerUI();
 
     this.add
-      .text(512, 84, "No hookers here dipshit!", {
+      .text(512, 84, "Go back up", {
         fontFamily: "Arial Black",
         fontSize: 24,
         color: "#ffffff",

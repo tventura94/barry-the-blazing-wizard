@@ -332,7 +332,7 @@ export class BuildingManager {
       building &&
       building.buildingId &&
       building.doorEnabled &&
-      building.originalTexture === "building1"
+      building.doorOpenTexture
     );
   }
 

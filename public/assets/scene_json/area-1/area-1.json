@@ -112,6 +112,62 @@
           "y": 100
         }
       }
+    },
+    {
+      "id": "store1",
+      "x": 800,
+      "y": 160,
+      "texture": "store1",
+      "scale": 0.7,
+
+      "physics": {
+        "bodies": [
+          {
+            "type": "collision",
+            "bodySize": {
+              "width": 350,
+              "height": 50
+            },
+            "bodyOffset": {
+              "x": 130,
+              "y": 185
+            }
+          },
+          {
+            "type": "pass-through",
+            "bodySize": {
+              "width": 370,
+              "height": 120
+            },
+            "bodyOffset": {
+              "x": 1,
+              "y": -30
+            }
+          }
+        ]
+      },
+      "door": {
+        "enabled": true,
+        "openTexture": "store1-door-open",
+        "closeDistance": 120,
+        "triggerZone": {
+          "width": 200,
+          "height": 80,
+          "offsetX": 50,
+          "offsetY": 50
+        },
+        "interactionZone": {
+          "width": 40,
+          "height": 20,
+          "offsetX": 18,
+          "offsetY": 50
+        },
+        "targetScene": "BlueRoom",
+        "targetPosition": {
+          "x": 500,
+          "y": 100
+        }
+      }
     }
   ],
   "props": [
@@ -125,11 +181,11 @@
           {
             "type": "collision",
             "bodySize": {
-              "width": 100,
-              "height": 160
+              "width": 70,
+              "height": 130
             },
             "bodyOffset": {
-              "x": 195,
+              "x": 212,
               "y": 260
             }
           },
@@ -161,7 +217,7 @@
     "y": 600
   },
   "ui": {
-    "text": "↓ go south for weed and hookers",
+    "text": "",
     "x": 512,
     "y": 84,
     "style": {
