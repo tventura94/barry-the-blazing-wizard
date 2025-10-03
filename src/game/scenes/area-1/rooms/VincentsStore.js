@@ -1,14 +1,14 @@
 import { Scene } from "phaser";
-import { SceneManager } from "../../managers/SceneManager.js";
+import { SceneManager } from "../../../managers/SceneManager.js";
 
-export class StarterArea extends Scene {
+export class VincentsStore extends Scene {
   constructor() {
-    super("StarterArea");
+    super("VincentsStore");
   }
 
   async create() {
-    console.log("StarterArea scene create() started");
-    this.cameras.main.setBackgroundColor(0x00ff00);
+    console.log("VincentsStore scene create() started");
+    this.cameras.main.setBackgroundColor(0x888888); // Grey background
 
     // Clear any existing scene manager and objects
     if (this.sceneManager) {
@@ -21,14 +21,14 @@ export class StarterArea extends Scene {
     try {
       // Load level data from JSON and wait for completion
       await this.sceneManager.loadLevelData();
-      console.log("Level loaded successfully");
+      console.log("VincentsStore level loaded successfully");
     } catch (error) {
-      console.error("Level loading failed:", error);
+      console.error("VincentsStore level loading failed:", error);
     }
 
     // Add screen edge detection
     this.setupScreenEdges();
-    console.log("StarterArea scene create() completed");
+    console.log("VincentsStore scene create() completed");
   }
 
   setupScreenEdges() {
@@ -49,8 +49,8 @@ export class StarterArea extends Scene {
       }
 
       // Manual screen edge detection (backup method)
-      if (this.player.sprite.y > 768) {
-        this.scene.start("House1");
+      if (this.player.sprite.y < 0) {
+        this.scene.start("StarterArea");
       }
     }
   }

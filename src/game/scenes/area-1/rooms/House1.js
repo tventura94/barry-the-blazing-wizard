@@ -1,13 +1,13 @@
 import { Scene } from "phaser";
-import { PlayerInitializer } from "../../player_barry/playerInitializer.js";
+import { PlayerInitializer } from "../../../player_barry/playerInitializer.js";
 
-export class BlueRoom extends Scene {
+export class House1 extends Scene {
   constructor() {
-    super("BlueRoom");
+    super("House1");
   }
 
   create() {
-    this.cameras.main.setBackgroundColor(0x0000ff); // Blue background
+    this.cameras.main.setBackgroundColor(0x000000); // Black background
 
     this.add.image(512, 384, "background").setAlpha(0.5);
 

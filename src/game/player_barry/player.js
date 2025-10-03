@@ -4,7 +4,7 @@ export class Player {
     x,
     y,
     name = "Barry",
-    speed = 110,
+    speed = 100,
     mana = 100,
     health = 100,
     inventory = [],

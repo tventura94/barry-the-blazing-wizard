@@ -3,7 +3,8 @@ import { StarterArea as MainGame } from "./scenes/area-1/StarterArea";
 import { GameOver } from "./scenes/GameOver";
 import { MainMenu } from "./scenes/MainMenu";
 import { Preloader } from "./scenes/Preloader";
-import { BlueRoom } from "./scenes/area-1/BlueRoom";
+import { House1 } from "./scenes/area-1/rooms/House1";
+import { VincentsStore } from "./scenes/area-1/rooms/VincentsStore";
 import { AUTO, Game } from "phaser";
 
 // Debug configuration - set to false to disable all debug visualizations
@@ -32,7 +33,7 @@ const config = {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
   },
-  scene: [Boot, Preloader, MainMenu, MainGame, BlueRoom, GameOver],
+  scene: [Boot, Preloader, MainMenu, MainGame, GameOver, VincentsStore, House1],
 };
 
 const StartGame = (parent) => {

@@ -1,44 +1,44 @@
 {
-    "section1": {
-        "files": [
-            {
-                "url": "src/game/scenes/BlueRoom.js",
-                "type": "sceneFile",
-                "key": "BlueRoom"
-            },
-            {
-                "url": "src/game/scenes/Boot.js",
-                "type": "sceneFile",
-                "key": "Boot"
-            },
-            {
-                "url": "src/game/scenes/Game.js",
-                "type": "sceneFile",
-                "key": "Game"
-            },
-            {
-                "url": "src/game/scenes/GameOver.js",
-                "type": "sceneFile",
-                "key": "GameOver"
-            },
-            {
-                "url": "src/game/scenes/MainMenu.js",
-                "type": "sceneFile",
-                "key": "MainMenu"
-            },
-            {
-                "url": "src/game/scenes/Preloader.js",
-                "type": "sceneFile",
-                "key": "Preloader"
-            }
-        ]
-    },
-    "meta": {
-        "app": "Phaser Editor 2D - Asset Pack Editor",
-        "contentType": "phasereditor2d.pack.core.AssetContentType",
-        "url": "https://phasereditor2d.com",
-        "version": 2,
-        "showAllFilesInBlocks": false,
-        "visible": true
-    }
+  "section1": {
+    "files": [
+      {
+        "url": "src/game/scenes/area-1/rooms/House1.js",
+        "type": "sceneFile",
+        "key": "House1"
+      },
+      {
+        "url": "src/game/scenes/Boot.js",
+        "type": "sceneFile",
+        "key": "Boot"
+      },
+      {
+        "url": "src/game/scenes/Game.js",
+        "type": "sceneFile",
+        "key": "Game"
+      },
+      {
+        "url": "src/game/scenes/GameOver.js",
+        "type": "sceneFile",
+        "key": "GameOver"
+      },
+      {
+        "url": "src/game/scenes/MainMenu.js",
+        "type": "sceneFile",
+        "key": "MainMenu"
+      },
+      {
+        "url": "src/game/scenes/Preloader.js",
+        "type": "sceneFile",
+        "key": "Preloader"
+      }
+    ]
+  },
+  "meta": {
+    "app": "Phaser Editor 2D - Asset Pack Editor",
+    "contentType": "phasereditor2d.pack.core.AssetContentType",
+    "url": "https://phasereditor2d.com",
+    "version": 2,
+    "showAllFilesInBlocks": false,
+    "visible": true
+  }
 }

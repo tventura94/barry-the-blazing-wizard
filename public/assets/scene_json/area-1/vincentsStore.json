@@ -1,5 +1,5 @@
 {
-  "name": "Level 1",
+  "name": "Vincents Store",
   "background": {
     "image": "background",
     "x": 512,
@@ -8,60 +8,9 @@
   },
   "buildings": [
     {
-      "id": "building1",
-      "x": 200,
-      "y": 500,
-      "texture": "building1",
-      "scale": 0.5,
-      "physics": {
-        "bodies": [
-          {
-            "type": "collision",
-            "bodySize": {
-              "width": 170,
-              "height": 60
-            },
-            "bodyOffset": {
-              "x": 165,
-              "y": 225
-            }
-          },
-          {
-            "type": "pass-through",
-            "bodySize": {
-              "width": 200,
-              "height": 80
-            },
-            "bodyOffset": {
-              "x": 0,
-              "y": -50
-            }
-          }
-        ]
-      },
-      "door": {
-        "enabled": true,
-        "openTexture": "building1-door-open",
-        "closeDistance": 120,
-        "triggerZone": {
-          "width": 100,
-          "height": 80,
-          "offsetX": 50,
-          "offsetY": 50
-        },
-        "interactionZone": {
-          "width": 40,
-          "height": 20,
-          "offsetX": 50,
-          "offsetY": 50
-        },
-        "targetScene": "House1"
-      }
-    },
-    {
       "id": "building2",
       "x": 400,
-      "y": 500,
+      "y": 200,
       "texture": "building1",
       "scale": 0.5,
       "physics": {
@@ -107,62 +56,6 @@
           "offsetY": 50
         },
         "targetScene": "House1",
-        "targetPosition": {
-          "x": 500,
-          "y": 100
-        }
-      }
-    },
-    {
-      "id": "store1",
-      "x": 800,
-      "y": 190,
-      "texture": "store1",
-      "scale": 0.7,
-
-      "physics": {
-        "bodies": [
-          {
-            "type": "collision",
-            "bodySize": {
-              "width": 350,
-              "height": 50
-            },
-            "bodyOffset": {
-              "x": 130,
-              "y": 185
-            }
-          },
-          {
-            "type": "pass-through",
-            "bodySize": {
-              "width": 370,
-              "height": 150
-            },
-            "bodyOffset": {
-              "x": 1,
-              "y": -30
-            }
-          }
-        ]
-      },
-      "door": {
-        "enabled": true,
-        "openTexture": "store1-door-open",
-        "closeDistance": 120,
-        "triggerZone": {
-          "width": 200,
-          "height": 80,
-          "offsetX": 50,
-          "offsetY": 50
-        },
-        "interactionZone": {
-          "width": 40,
-          "height": 20,
-          "offsetX": 18,
-          "offsetY": 50
-        },
-        "targetScene": "VincentsStore",
         "targetPosition": {
           "x": 500,
           "y": 100
