@@ -44,6 +44,8 @@ export class StarterArea extends Scene {
       // Check door trigger zones for proximity detection
       if (this.sceneManager) {
         this.sceneManager.checkDoorTriggerZones();
+        // Check pass-through areas for z-index layering
+        this.sceneManager.checkPassThroughAreas();
       }
 
       // Manual screen edge detection (backup method)

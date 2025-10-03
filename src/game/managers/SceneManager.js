@@ -82,7 +82,7 @@ export class SceneManager {
         `Setting up collision between player and prop ${prop.propId}`
       );
 
-      // Use collider for solid collision detection (same as buildings)
+      // Main prop physics body (same as buildings)
       this.scene.physics.add.collider(
         this.scene.player.sprite,
         prop,
@@ -90,6 +90,27 @@ export class SceneManager {
         null,
         this.scene
       );
+
+      // Additional collision bodies for multiple collision areas
+      if (prop.additionalBodies && prop.additionalBodies.length > 0) {
+        prop.additionalBodies.forEach((additionalBody, index) => {
+          console.log(`  Setting up collision with additional body ${index}`);
+          this.scene.physics.add.collider(
+            this.scene.player.sprite,
+            additionalBody,
+            this.handlePlayerPropCollision.bind(this),
+            null,
+            this.scene
+          );
+        });
+      }
+
+      // Pass-through bodies don't need collision detection, they handle z-index layering
+      if (prop.passThroughBodies && prop.passThroughBodies.length > 0) {
+        console.log(
+          `  Pass-through bodies: ${prop.passThroughBodies.length} (no collision detection)`
+        );
+      }
     });
 
     // Debug: Log player physics body info
@@ -144,6 +165,46 @@ export class SceneManager {
     // This method handles collision detection with props
     // The physics engine will prevent the player from walking through the prop
     console.log(`Player collided with prop ${prop.propId}`);
+  }
+
+  // Check pass-through areas for z-index layering
+  checkPassThroughAreas() {
+    if (!this.scene.player || !this.scene.player.sprite || !this.scene.props) {
+      return;
+    }
+
+    const playerX = this.scene.player.sprite.x;
+    const playerY = this.scene.player.sprite.y;
+    let isInPassThroughArea = false;
+
+    // Check all props for pass-through areas
+    this.scene.props.forEach((prop) => {
+      if (prop.passThroughBodies && prop.passThroughBodies.length > 0) {
+        prop.passThroughBodies.forEach((passThroughBody) => {
+          const bodyX = passThroughBody.x;
+          const bodyY = passThroughBody.y;
+          const bodyWidth = passThroughBody.displayWidth;
+          const bodyHeight = passThroughBody.displayHeight;
+
+          // Check if player is within the pass-through area
+          const distanceX = Math.abs(playerX - bodyX);
+          const distanceY = Math.abs(playerY - bodyY);
+
+          if (distanceX < bodyWidth / 2 && distanceY < bodyHeight / 2) {
+            isInPassThroughArea = true;
+          }
+        });
+      }
+    });
+
+    // Adjust player depth based on pass-through areas
+    if (isInPassThroughArea) {
+      // Player is under something, put them behind it
+      this.scene.player.sprite.setDepth(500);
+    } else {
+      // Player is in normal area, put them in front
+      this.scene.player.sprite.setDepth(100);
+    }
   }
 
   // Check door trigger zones for proximity detection
