@@ -6,6 +6,13 @@ import { Preloader } from "./scenes/Preloader";
 import { BlueRoom } from "./scenes/area-1/BlueRoom";
 import { AUTO, Game } from "phaser";
 
+// Debug configuration - set to false to disable all debug visualizations
+export const DEBUG_CONFIG = {
+  enabled: true, // THIS TRIGGERS DEBUGGING
+  showCollisionBodies: true, // Red rectangles for additional collision bodies
+  showPassThroughBodies: true, // Green rectangles for pass-through areas
+};
+
 //  Find out more information about the Game Config at:
 //  https://docs.phaser.io/api-documentation/typedef/types-core#gameconfig
 const config = {
@@ -18,7 +25,7 @@ const config = {
     default: "arcade",
     arcade: {
       gravity: { y: 0 },
-      debug: true,
+      debug: DEBUG_CONFIG.enabled,
     },
   },
   scale: {

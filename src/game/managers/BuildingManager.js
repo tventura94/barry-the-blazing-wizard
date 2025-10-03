@@ -1,3 +1,5 @@
+import { DEBUG_CONFIG } from "../main.js";
+
 export class BuildingManager {
   constructor(scene) {
     this.scene = scene;
@@ -156,16 +158,18 @@ export class BuildingManager {
         // Set depth to be above player (higher z-index) when player is not in pass-through area
         passThroughBody.setDepth(200);
 
-        // Debug visualization for pass-through bodies (temporarily enabled)
-        const debugGraphics = this.scene.add.graphics();
-        debugGraphics.lineStyle(2, 0x00ff00, 1); // Green for pass-through bodies
-        debugGraphics.strokeRect(
-          passThroughBody.x - bodyData.bodySize.width / 2,
-          passThroughBody.y - bodyData.bodySize.height / 2,
-          bodyData.bodySize.width,
-          bodyData.bodySize.height
-        );
-        passThroughBody.debugGraphics = debugGraphics;
+        // Debug visualization for pass-through bodies only if debug is enabled
+        if (DEBUG_CONFIG.enabled && DEBUG_CONFIG.showPassThroughBodies) {
+          const debugGraphics = this.scene.add.graphics();
+          debugGraphics.lineStyle(2, 0x00ff00, 1); // Green for pass-through bodies
+          debugGraphics.strokeRect(
+            passThroughBody.x - bodyData.bodySize.width / 2,
+            passThroughBody.y - bodyData.bodySize.height / 2,
+            bodyData.bodySize.width,
+            bodyData.bodySize.height
+          );
+          passThroughBody.debugGraphics = debugGraphics;
+        }
 
         console.log(
           `Pass-through body ${index} for building ${building.buildingId}:`,
@@ -202,6 +206,19 @@ export class BuildingManager {
 
         // Make the physics body invisible
         additionalBody.setVisible(false);
+
+        // Add debug visualization for additional collision bodies only if debug is enabled
+        if (DEBUG_CONFIG.enabled && DEBUG_CONFIG.showCollisionBodies) {
+          const debugGraphics = this.scene.add.graphics();
+          debugGraphics.lineStyle(2, 0xff0000, 1); // Red for additional collision bodies
+          debugGraphics.strokeRect(
+            additionalBody.x - bodyData.bodySize.width / 2,
+            additionalBody.y - bodyData.bodySize.height / 2,
+            bodyData.bodySize.width,
+            bodyData.bodySize.height
+          );
+          additionalBody.debugGraphics = debugGraphics;
+        }
 
         console.log(
           `Additional collision body ${index} for building ${building.buildingId}:`,
@@ -249,8 +266,18 @@ export class BuildingManager {
           // Destroy additional collision bodies first
           if (building.additionalBodies) {
             building.additionalBodies.forEach((additionalBody) => {
-              if (additionalBody && additionalBody.destroy) {
-                additionalBody.destroy();
+              if (additionalBody) {
+                // Destroy debug graphics if they exist
+                if (
+                  additionalBody.debugGraphics &&
+                  additionalBody.debugGraphics.destroy
+                ) {
+                  additionalBody.debugGraphics.destroy();
+                }
+                // Destroy the additional body
+                if (additionalBody.destroy) {
+                  additionalBody.destroy();
+                }
               }
             });
           }
