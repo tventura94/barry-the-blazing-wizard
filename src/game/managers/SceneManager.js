@@ -1,6 +1,7 @@
 import { BuildingManager } from "./BuildingManager.js";
 import { PropManager } from "./PropManager.js";
 import { NPCManager } from "./NPCManager.js";
+import { DialogManager } from "./DialogManager/DialogManager.js";
 import { PlayerInitializer } from "../player_barry/playerInitializer.js";
 
 export class SceneManager {
@@ -9,6 +10,7 @@ export class SceneManager {
     this.buildingManager = new BuildingManager(scene);
     this.propManager = new PropManager(scene);
     this.npcManager = new NPCManager(scene);
+    this.dialogManager = new DialogManager(scene);
     this.playerInBuilding = null; // Track which building the player is currently near
     this.playerOriginalDepth = null; // Will be set from JSON data
   }
@@ -73,6 +75,9 @@ export class SceneManager {
       levelData.player.y
     );
     this.scene.playerInitializer.createPlayerUI();
+
+    // Initialize dialog system
+    this.dialogManager.createDialogUI();
 
     // Store player's original depth from JSON data
     this.playerOriginalDepth = levelData.player.depth;

@@ -1,5 +1,7 @@
 import { Scene } from "phaser";
 import { SceneManager } from "../../../managers/SceneManager.js";
+import { DialogManager } from "../../../managers/DialogManager/DialogManager.js";
+import { VincentsStoreDialogs } from "../../../managers/DialogManager/VincentsStore/VincentsStoreDialogs.js";
 
 export class VincentsStore extends Scene {
   constructor() {
@@ -17,6 +19,11 @@ export class VincentsStore extends Scene {
 
     // Initialize scene manager
     this.sceneManager = new SceneManager(this);
+
+    // Initialize dialog system
+    this.dialogManager = new DialogManager(this);
+    this.vincentDialogController = new VincentsStoreDialogs(this);
+    this.dialogManager.createDialogUI();
 
     try {
       // Load level data from JSON and wait for completion
@@ -46,6 +53,11 @@ export class VincentsStore extends Scene {
         this.sceneManager.checkDoorTriggerZones();
         // Check pass-through areas for z-index layering
         this.sceneManager.checkPassThroughAreas();
+      }
+
+      // Update dialog system
+      if (this.dialogManager) {
+        this.dialogManager.update();
       }
 
       // Manual screen edge detection (backup method)
