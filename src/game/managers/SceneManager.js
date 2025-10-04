@@ -324,24 +324,10 @@ export class SceneManager {
     const playerY = this.scene.player.sprite.y;
     let isInPassThroughArea = false;
 
-    // Debug logging
-    if (Math.random() < 0.01) {
-      console.log(
-        `Checking pass-through areas for player at (${playerX}, ${playerY})`
-      );
-    }
-
     // Check all props for pass-through areas
     if (this.scene.props) {
       this.scene.props.forEach((prop) => {
         if (prop.passThroughBodies && prop.passThroughBodies.length > 0) {
-          // Debug logging
-          if (Math.random() < 0.01) {
-            console.log(
-              `Checking prop ${prop.propId} pass-through areas:`,
-              prop.passThroughBodies.length
-            );
-          }
           prop.passThroughBodies.forEach((passThroughBody) => {
             const bodyX = passThroughBody.x;
             const bodyY = passThroughBody.y;
