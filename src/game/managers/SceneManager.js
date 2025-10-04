@@ -16,19 +16,9 @@ export class SceneManager {
   }
 
   async loadLevelData() {
-    // Determine which JSON file to load based on scene name
-    let jsonFile;
-    switch (this.scene.scene.key) {
-      case "StarterArea":
-        jsonFile = "/assets/scene_json/area-1/area-1.json";
-        break;
-      case "VincentsStore":
-        jsonFile = "/assets/scene_json/area-1/vincentsStore.json";
-        break;
-      default:
-        jsonFile = "/assets/scene_json/area-1/area-1.json";
-        break;
-    }
+    // Dynamically construct JSON file path based on scene name
+    const sceneName = this.scene.scene.key;
+    const jsonFile = `/assets/scene_json/area-1/${sceneName}.json`;
 
     // Load the JSON file from public directory
     const response = await fetch(jsonFile);

@@ -22,7 +22,7 @@ export class VincentsStore extends Scene {
 
     // Initialize dialog system
     this.dialogManager = new DialogManager(this);
-    this.vincentDialogController = new VincentsStoreDialogs(this);
+    this.vincentsstoreDialogController = new VincentsStoreDialogs(this);
     this.dialogManager.createDialogUI();
 
     try {

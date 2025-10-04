@@ -52,7 +52,7 @@ export class DialogManager {
     this.continuePrompt = this.scene.add.text(
       centerX,
       this.scene.cameras.main.height - 60,
-      "Press SPACE to continue or R to close",
+      "Press SPACE to continue or ESC to close",
       {
         fontFamily: "Arial",
         fontSize: "14px",
@@ -133,13 +133,6 @@ export class DialogManager {
       }
     });
 
-    // Handle R key to close dialog
-    this.scene.input.keyboard.on("keydown-R", () => {
-      if (this.isDialogActive) {
-        this.closeDialog();
-      }
-    });
-
     // Handle E key for interaction
     this.scene.input.keyboard.on("keydown-E", () => {
       if (!this.isDialogActive) {
@@ -198,16 +191,11 @@ export class DialogManager {
   getDialogController() {
     const sceneKey = this.scene.scene.key;
 
-    switch (sceneKey) {
-      case "VincentsStore":
-        return this.scene.vincentDialogController;
-      case "StarterArea":
-        return this.scene.starterAreaDialogController;
-      case "House1":
-        return this.scene.house1DialogController;
-      default:
-        return null;
-    }
+    // Dynamically construct dialog controller property name based on scene name
+    const dialogControllerProperty = `${sceneKey.toLowerCase()}DialogController`;
+
+    // Return the dialog controller if it exists on the scene
+    return this.scene[dialogControllerProperty] || null;
   }
 
   // Show the actual dialog

@@ -8,15 +8,22 @@ export class VincentsStoreDialogs {
   // Load dialog data from JSON
   async loadDialogData() {
     try {
-      const response = await fetch("/assets/dialogs/vincentsStoreDialog.json");
+      // Dynamically construct JSON file path based on scene name
+      const sceneName = this.scene.scene.key;
+      const jsonFile = `/assets/dialogs/${sceneName}.json`;
+
+      const response = await fetch(jsonFile);
       if (!response.ok) {
-        console.warn("No dialog file found for VincentsStore");
+        console.warn(`No dialog file found for ${sceneName}`);
         this.dialogData = this.getDefaultDialogs();
         return;
       }
       this.dialogData = await response.json();
     } catch (error) {
-      console.error("Failed to load VincentsStore dialog data:", error);
+      console.error(
+        `Failed to load ${this.scene.scene.key} dialog data:`,
+        error
+      );
       this.dialogData = this.getDefaultDialogs();
     }
   }
