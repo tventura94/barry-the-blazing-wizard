@@ -324,10 +324,24 @@ export class SceneManager {
     const playerY = this.scene.player.sprite.y;
     let isInPassThroughArea = false;
 
+    // Debug logging
+    if (Math.random() < 0.01) {
+      console.log(
+        `Checking pass-through areas for player at (${playerX}, ${playerY})`
+      );
+    }
+
     // Check all props for pass-through areas
     if (this.scene.props) {
       this.scene.props.forEach((prop) => {
         if (prop.passThroughBodies && prop.passThroughBodies.length > 0) {
+          // Debug logging
+          if (Math.random() < 0.01) {
+            console.log(
+              `Checking prop ${prop.propId} pass-through areas:`,
+              prop.passThroughBodies.length
+            );
+          }
           prop.passThroughBodies.forEach((passThroughBody) => {
             const bodyX = passThroughBody.x;
             const bodyY = passThroughBody.y;
@@ -379,6 +393,13 @@ export class SceneManager {
           building.passThroughBodies &&
           building.passThroughBodies.length > 0
         ) {
+          // Debug logging
+          if (Math.random() < 0.01) {
+            console.log(
+              `Checking building ${building.buildingId} pass-through areas:`,
+              building.passThroughBodies.length
+            );
+          }
           building.passThroughBodies.forEach((passThroughBody) => {
             const bodyX = passThroughBody.x;
             const bodyY = passThroughBody.y;
@@ -423,14 +444,55 @@ export class SceneManager {
       });
     }
 
-    // Adjust player depth based on pass-through areas
-    if (isInPassThroughArea) {
-      // Player is under something, put them behind it (lower z-index)
-      this.scene.player.sprite.setDepth(50);
-    } else {
-      // Player is in normal area, put them in front (higher z-index)
-      this.scene.player.sprite.setDepth(150);
+    // Check all NPCs for pass-through areas
+    if (this.scene.npcs) {
+      this.scene.npcs.forEach((npc) => {
+        if (npc.passThroughBodies && npc.passThroughBodies.length > 0) {
+          npc.passThroughBodies.forEach((passThroughBody) => {
+            const bodyX = passThroughBody.x;
+            const bodyY = passThroughBody.y;
+            const bodyWidth = passThroughBody.displayWidth;
+            const bodyHeight = passThroughBody.displayHeight;
+
+            // Check if player is within the pass-through area bounds
+            const leftBound = bodyX - bodyWidth / 2;
+            const rightBound = bodyX + bodyWidth / 2;
+            const topBound = bodyY - bodyHeight / 2;
+            const bottomBound = bodyY + bodyHeight / 2;
+
+            // Debug logging
+            if (Math.random() < 0.01) {
+              // Only log occasionally to avoid spam
+              console.log(`Pass-through area ${npc.npcId}:`, {
+                bodyPos: { x: bodyX, y: bodyY },
+                bodySize: { width: bodyWidth, height: bodyHeight },
+                bounds: {
+                  left: leftBound,
+                  right: rightBound,
+                  top: topBound,
+                  bottom: bottomBound,
+                },
+                playerPos: { x: playerX, y: playerY },
+              });
+            }
+
+            if (
+              playerX >= leftBound &&
+              playerX <= rightBound &&
+              playerY >= topBound &&
+              playerY <= bottomBound
+            ) {
+              isInPassThroughArea = true;
+              console.log(`Player is in pass-through area of NPC ${npc.npcId}`);
+            }
+          });
+        }
+      });
     }
+
+    // Don't set player depth here - let updateDepthSorting handle it
+    // Just return whether player is in pass-through area
+    return isInPassThroughArea;
   }
 
   // Check door trigger zones for proximity detection
