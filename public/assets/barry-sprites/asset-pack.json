@@ -1,27 +1,40 @@
 {
-    "section1": {
-        "files": [
-            {
-                "url": "public/assets/barry-sprites/walk.png",
-                "frameConfig": {
-                    "frameWidth": 32,
-                    "frameHeight": 32,
-                    "startFrame": 0,
-                    "endFrame": -1,
-                    "spacing": 0,
-                    "margin": 0
-                },
-                "type": "spritesheet",
-                "key": "walk"
-            }
-        ]
-    },
-    "meta": {
-        "app": "Phaser Editor 2D - Asset Pack Editor",
-        "contentType": "phasereditor2d.pack.core.AssetContentType",
-        "url": "https://phasereditor2d.com",
-        "version": 2,
-        "showAllFilesInBlocks": false,
-        "visible": true
-    }
+  "section1": {
+    "files": [
+      {
+        "url": "public/assets/barry-sprites/walk.png",
+        "frameConfig": {
+          "frameWidth": 32,
+          "frameHeight": 32,
+          "startFrame": 0,
+          "endFrame": -1,
+          "spacing": 0,
+          "margin": 0
+        },
+        "type": "spritesheet",
+        "key": "walk"
+      },
+      {
+        "url": "public/assets/vincent-sprites/vincent-standing.png",
+        "frameConfig": {
+          "frameWidth": 166,
+          "frameHeight": 250,
+          "startFrame": 0,
+          "endFrame": 5,
+          "spacing": 0,
+          "margin": 0
+        },
+        "type": "spritesheet",
+        "key": "vincent-standing"
+      }
+    ]
+  },
+  "meta": {
+    "app": "Phaser Editor 2D - Asset Pack Editor",
+    "contentType": "phasereditor2d.pack.core.AssetContentType",
+    "url": "https://phasereditor2d.com",
+    "version": 2,
+    "showAllFilesInBlocks": false,
+    "visible": true
+  }
 }

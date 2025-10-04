@@ -32,6 +32,7 @@ export class Preloader extends Scene {
     this.load.image("building1", "buildings/building1.png");
     this.load.image("building1-door-open", "buildings/building1-door-open.png");
     this.load.image("tree1", "props/tree1.png");
+    this.load.image("placemat1", "props/placemat1.png");
     this.load.image("store1", "buildings/store1.png");
     this.load.image("store1-door-open", "buildings/store1-door-open.png");
 
@@ -41,6 +42,17 @@ export class Preloader extends Scene {
       frameHeight: 64, // Each frame is 64 pixels tall
       endFrame: 35, // 36 frames total (4 rows x 9 frames each)
     });
+
+    // Load Vincent's standing animation sprite sheet
+    this.load.spritesheet(
+      "vincent-standing",
+      "vincent-sprites/vincent-standing.png",
+      {
+        frameWidth: 166, // Each frame is 166 pixels wide (500/3)
+        frameHeight: 250, // Each frame is 250 pixels tall (500/2)
+        endFrame: 5, // 6 frames total (2 rows x 3 frames each)
+      }
+    );
   }
 
   create() {

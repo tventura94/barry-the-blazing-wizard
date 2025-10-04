@@ -3,48 +3,31 @@
   "background": {
     "image": "background",
     "x": 512,
-    "y": 384,
+    "y": 840,
     "alpha": 0.5
   },
   "buildings": [
     {
-      "id": "building2",
-      "x": 400,
-      "y": 200,
-      "texture": "building1",
-      "scale": 0.5,
+      "id": "placemat1",
+      "x": 350,
+      "y": 753,
+      "scale": 0.1,
+      "texture": "placemat1",
       "physics": {
         "bodies": [
           {
             "type": "collision",
-            "bodySize": {
-              "width": 170,
-              "height": 60
-            },
-            "bodyOffset": {
-              "x": 165,
-              "y": 225
-            }
-          },
-          {
-            "type": "pass-through",
-            "bodySize": {
-              "width": 200,
-              "height": 80
-            },
-            "bodyOffset": {
-              "x": 0,
-              "y": -50
-            }
+            "bodySize": { "width": 70, "height": 130 },
+            "bodyOffset": { "x": 212, "y": 260 }
           }
         ]
       },
       "door": {
         "enabled": true,
-        "openTexture": "building1-door-open",
+        "openTexture": "placemat1",
         "closeDistance": 120,
         "triggerZone": {
-          "width": 100,
+          "width": 200,
           "height": 80,
           "offsetX": 50,
           "offsetY": 50
@@ -52,10 +35,10 @@
         "interactionZone": {
           "width": 40,
           "height": 20,
-          "offsetX": 50,
+          "offsetX": 18,
           "offsetY": 50
         },
-        "targetScene": "House1",
+        "targetScene": "StarterArea",
         "targetPosition": {
           "x": 500,
           "y": 100
@@ -63,56 +46,24 @@
       }
     }
   ],
-  "props": [
-    {
-      "id": "tree1",
-      "x": 200,
-      "y": 100,
-      "texture": "tree1",
-      "physics": {
-        "bodies": [
-          {
-            "type": "collision",
-            "bodySize": {
-              "width": 70,
-              "height": 130
-            },
-            "bodyOffset": {
-              "x": 212,
-              "y": 260
-            }
-          },
-          {
-            "type": "pass-through",
-            "bodySize": {
-              "width": 350,
-              "height": 140
-            },
-            "bodyOffset": {
-              "x": 0,
-              "y": -20
-            }
-          }
-        ]
-      }
-    }
-  ],
+  "props": [],
   "npcs": [
     {
-      "id": "npc1",
-      "x": 500,
-      "y": 500,
-      "texture": "npc1"
+      "id": "vincent",
+      "x": 350,
+      "y": 460,
+      "texture": "vincent-standing",
+      "scale": 0.28
     }
   ],
   "player": {
-    "x": 500,
-    "y": 600
+    "x": 350,
+    "y": 706
   },
   "ui": {
     "text": "",
-    "x": 512,
-    "y": 84,
+    "x": 400,
+    "y": 532,
     "style": {
       "fontFamily": "Arial Black",
       "fontSize": 24,

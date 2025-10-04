@@ -38,6 +38,11 @@ export class PropManager {
       // Set the prop ID for reference
       prop.propId = propData.id;
 
+      // Apply scaling if specified
+      if (propData.scale !== undefined) {
+        prop.setScale(propData.scale);
+      }
+
       // Set initial depth for the prop (will be adjusted based on pass-through areas)
       prop.setDepth(100);
 

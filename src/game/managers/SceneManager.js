@@ -1,5 +1,6 @@
 import { BuildingManager } from "./BuildingManager.js";
 import { PropManager } from "./PropManager.js";
+import { NPCManager } from "./NPCManager.js";
 import { PlayerInitializer } from "../player_barry/playerInitializer.js";
 
 export class SceneManager {
@@ -7,6 +8,7 @@ export class SceneManager {
     this.scene = scene;
     this.buildingManager = new BuildingManager(scene);
     this.propManager = new PropManager(scene);
+    this.npcManager = new NPCManager(scene);
     this.playerInBuilding = null; // Track which building the player is currently near
   }
 
@@ -59,6 +61,9 @@ export class SceneManager {
 
     // Create props from data using PropManager
     this.scene.props = this.propManager.createPropsFromLevelData(levelData);
+
+    // Create NPCs from data using NPCManager
+    this.scene.npcs = this.npcManager.createNPCsFromLevelData(levelData);
 
     // Initialize player
     this.scene.playerInitializer = new PlayerInitializer(this.scene);
@@ -181,6 +186,7 @@ export class SceneManager {
     // Clear existing buildings and player if they exist
     this.buildingManager.clearBuildings(this.scene.buildings);
     this.propManager.clearProps();
+    this.npcManager.clearNPCs();
     if (
       this.scene.player &&
       this.scene.player.sprite &&

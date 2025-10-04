@@ -8,7 +8,7 @@ export class VincentsStore extends Scene {
 
   async create() {
     console.log("VincentsStore scene create() started");
-    this.cameras.main.setBackgroundColor(0x888888); // Grey background
+    this.cameras.main.setBackgroundColor(0x000000); // Black background
 
     // Clear any existing scene manager and objects
     if (this.sceneManager) {
