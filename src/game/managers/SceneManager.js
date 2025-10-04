@@ -213,10 +213,69 @@ export class SceneManager {
     console.log(`Player collided with prop ${prop.propId}`);
   }
 
-  // Check pass-through areas for z-index layering
-  checkPassThroughAreas() {
+  // Update depth sorting for all sprites based on Y position
+  updateDepthSorting() {
     if (!this.scene.player || !this.scene.player.sprite) {
       return;
+    }
+
+    const playerY = this.scene.player.sprite.y;
+
+    // Check if player is in a pass-through area first
+    const isInPassThroughArea = this.checkIfPlayerInPassThroughArea();
+
+    // Create an array of all sprites that need depth sorting
+    const spritesToSort = [];
+
+    // Add player
+    spritesToSort.push({
+      sprite: this.scene.player.sprite,
+      y: playerY,
+      isPlayer: true,
+      isInPassThroughArea: isInPassThroughArea,
+    });
+
+    // Add NPCs
+    if (this.scene.npcs) {
+      this.scene.npcs.forEach((npc) => {
+        if (npc && npc.y !== undefined) {
+          spritesToSort.push({
+            sprite: npc,
+            y: npc.y,
+            isPlayer: false,
+            isInPassThroughArea: false,
+          });
+        }
+      });
+    }
+
+    // Sort sprites by Y position (lower Y = behind, higher Y = in front)
+    spritesToSort.sort((a, b) => a.y - b.y);
+
+    // Assign depths based on sorted order
+    spritesToSort.forEach((item, index) => {
+      let depth = 100 + index; // Base depth of 100, then increment by index
+
+      // If player is in a pass-through area, put them behind everything
+      if (item.isPlayer && item.isInPassThroughArea) {
+        depth = 50;
+      }
+
+      item.sprite.setDepth(depth);
+    });
+  }
+
+  // Check pass-through areas for z-index layering
+  checkPassThroughAreas() {
+    // This method now just calls the depth sorting update
+    // The actual pass-through area checking is handled in checkIfPlayerInPassThroughArea
+    this.updateDepthSorting();
+  }
+
+  // Check if player is in a pass-through area (extracted from checkPassThroughAreas)
+  checkIfPlayerInPassThroughArea() {
+    if (!this.scene.player || !this.scene.player.sprite) {
+      return false;
     }
 
     const playerX = this.scene.player.sprite.x;
