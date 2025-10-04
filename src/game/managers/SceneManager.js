@@ -158,6 +158,41 @@ export class SceneManager {
       }
     });
 
+    // Set up collisions between player and NPCs
+    this.scene.npcs.forEach((npc) => {
+      console.log(`Setting up collision between player and NPC ${npc.npcId}`);
+
+      // Main NPC physics body
+      this.scene.physics.add.collider(
+        this.scene.player.sprite,
+        npc,
+        this.handlePlayerNPCCollision.bind(this),
+        null,
+        this.scene
+      );
+
+      // Additional collision bodies for multiple collision areas
+      if (npc.additionalBodies && npc.additionalBodies.length > 0) {
+        npc.additionalBodies.forEach((additionalBody, index) => {
+          console.log(`  Setting up collision with additional body ${index}`);
+          this.scene.physics.add.collider(
+            this.scene.player.sprite,
+            additionalBody,
+            this.handlePlayerNPCCollision.bind(this),
+            null,
+            this.scene
+          );
+        });
+      }
+
+      // Pass-through bodies don't need collision detection, they handle z-index layering
+      if (npc.passThroughBodies && npc.passThroughBodies.length > 0) {
+        console.log(
+          `  Pass-through bodies: ${npc.passThroughBodies.length} (no collision detection)`
+        );
+      }
+    });
+
     // Debug: Log player physics body info
     console.log("Player physics body:", {
       immovable: this.scene.player.sprite.body.immovable,
@@ -211,6 +246,13 @@ export class SceneManager {
     // This method handles collision detection with props
     // The physics engine will prevent the player from walking through the prop
     console.log(`Player collided with prop ${prop.propId}`);
+  }
+
+  // Handle collision between player and NPC
+  handlePlayerNPCCollision(player, npc) {
+    // This method handles collision detection with NPCs
+    // The physics engine will prevent the player from walking through the NPC
+    console.log(`Player collided with NPC ${npc.npcId}`);
   }
 
   // Update depth sorting for all sprites based on Y position

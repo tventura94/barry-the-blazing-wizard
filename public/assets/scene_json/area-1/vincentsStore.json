@@ -262,6 +262,21 @@
       "y": 460,
       "texture": "vincent-standing",
       "scale": 0.28,
+      "physics": {
+        "bodies": [
+          {
+            "type": "collision",
+            "bodySize": {
+              "width": 40,
+              "height": 60
+            },
+            "bodyOffset": {
+              "x": 0,
+              "y": -200
+            }
+          }
+        ]
+      },
       "animation": {
         "key": "vincent-standing",
         "frames": [
