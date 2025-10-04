@@ -1,5 +1,6 @@
 {
   "name": "Vincents Store",
+  "worldType": "room",
   "background": {
     "image": "background",
     "x": 512,

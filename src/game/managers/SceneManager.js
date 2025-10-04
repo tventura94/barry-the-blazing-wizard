@@ -13,6 +13,7 @@ export class SceneManager {
     this.dialogManager = new DialogManager(scene);
     this.playerInBuilding = null; // Track which building the player is currently near
     this.playerOriginalDepth = null; // Will be set from JSON data
+    this.currentWorldType = null; // Store the current scene's world type
   }
 
   async loadLevelData() {
@@ -71,6 +72,9 @@ export class SceneManager {
 
     // Store player's original depth from JSON data
     this.playerOriginalDepth = levelData.player.depth;
+
+    // Store the current scene's world type
+    this.currentWorldType = levelData.worldType;
 
     // Set up collisions with custom callback
     this.scene.buildings.forEach((building) => {
@@ -566,16 +570,40 @@ export class SceneManager {
     // Keeping it for backward compatibility but it's no longer used
   }
 
-  // Handle door interaction for scene transitions
-  handleDoorInteraction(player, doorZone) {
-    if (doorZone && doorZone.isDoorZone && doorZone.targetScene) {
-      console.log(
-        `Player entered door zone, transitioning to ${doorZone.targetScene}`
-      );
+  // Get the world type of a target scene by loading its JSON data
+  async getTargetSceneWorldType(sceneName) {
+    try {
+      const jsonFile = `/assets/scene_json/area-1/${sceneName}.json`;
+      const response = await fetch(jsonFile);
+      if (!response.ok) {
+        console.warn(
+          `Could not load world type for scene ${sceneName}: ${response.status}`
+        );
+        return null;
+      }
+      const levelData = await response.json();
+      return levelData.worldType;
+    } catch (error) {
+      console.warn(`Error loading world type for scene ${sceneName}:`, error);
+      return null;
+    }
+  }
 
-      // Save player data before scene transition
-      if (this.scene.player) {
+  // Handle door interaction for scene transitions
+  async handleDoorInteraction(player, doorZone) {
+    if (doorZone && doorZone.isDoorZone && doorZone.targetScene) {
+      // Only capture position when entering a room (not when exiting back to open world)
+      // Check if we're transitioning from open world to a room using world types
+      const targetWorldType = await this.getTargetSceneWorldType(
+        doorZone.targetScene
+      );
+      const isEnteringRoom =
+        this.currentWorldType === "open" && targetWorldType === "room";
+
+      if (isEnteringRoom && this.scene.player) {
+        this.scene.player.updateLastOpenWorldPosition();
         this.scene.player.saveToRegistry();
+        console.log("Captured open world position before entering room");
       }
 
       // Start the target scene

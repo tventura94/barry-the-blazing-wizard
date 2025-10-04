@@ -1,0 +1,101 @@
+{
+  "name": "House 1",
+  "worldType": "room",
+  "background": {
+    "image": "background",
+    "x": 512,
+    "y": 384,
+    "alpha": 0.5
+  },
+  "buildings": [
+    {
+      "id": "exit-door",
+      "x": 512,
+      "y": 450,
+      "texture": "placemat1",
+      "scale": 0.1,
+      "depth": 110,
+      "physics": {
+        "bodies": [
+          {
+            "type": "collision",
+            "bodySize": {
+              "width": 70,
+              "height": 30
+            },
+            "bodyOffset": {
+              "x": 212,
+              "y": 225
+            }
+          }
+        ]
+      },
+      "door": {
+        "enabled": true,
+        "openTexture": "placemat1",
+        "closeDistance": 120,
+        "triggerZone": {
+          "width": 100,
+          "height": 40,
+          "offsetX": -40,
+          "offsetY": 0
+        },
+        "interactionZone": {
+          "width": 40,
+          "height": 15,
+          "offsetX": 20,
+          "offsetY": 20
+        },
+        "targetScene": "StarterArea",
+        "targetPosition": {
+          "x": 500,
+          "y": 200
+        }
+      }
+    }
+  ],
+  "props": [
+    {
+      "id": "oak-wall",
+      "x": 512,
+      "y": 200,
+      "texture": "oak-wall",
+      "scale": 0.5,
+      "depth": 100,
+      "physics": {
+        "bodies": [
+          {
+            "type": "collision",
+            "bodySize": {
+              "width": 200,
+              "height": 50
+            },
+            "bodyOffset": {
+              "x": 0,
+              "y": 0
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "npcs": [],
+  "player": {
+    "x": 512,
+    "y": 380,
+    "depth": 110
+  },
+  "ui": {
+    "text": "Go back up",
+    "x": 512,
+    "y": 84,
+    "style": {
+      "fontFamily": "Arial Black",
+      "fontSize": 24,
+      "color": "#ffffff",
+      "stroke": "#000000",
+      "strokeThickness": 4,
+      "align": "center"
+    }
+  }
+}

@@ -1,5 +1,6 @@
 {
   "name": "Level 1",
+  "worldType": "open",
   "background": {
     "image": "background",
     "x": 512,
@@ -210,7 +211,7 @@
   "npcs": [],
   "player": {
     "x": 500,
-    "y": 600,
+    "y": 200,
     "depth": 110
   },
   "ui": {

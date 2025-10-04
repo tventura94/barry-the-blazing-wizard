@@ -1,41 +1,34 @@
 import { Scene } from "phaser";
-import { PlayerInitializer } from "../../../player_barry/playerInitializer.js";
+import { SceneManager } from "../../../managers/SceneManager.js";
 
 export class House1 extends Scene {
   constructor() {
     super("House1");
   }
 
-  create() {
+  async create() {
+    console.log("House1 scene create() started");
     this.cameras.main.setBackgroundColor(0x000000); // Black background
 
-    this.add.image(512, 384, "background").setAlpha(0.5);
-
-    // Initialize player using PlayerInitializer at specific position for this scene
-    this.playerInitializer = new PlayerInitializer(this);
-    this.player = this.playerInitializer.initializePlayer(500, 100);
-
-    // Load player data from registry if available
-    if (this.player) {
-      this.player.loadFromRegistry(false); // Don't load position, use the scene's position
+    // Clear any existing scene manager and objects
+    if (this.sceneManager) {
+      this.sceneManager.clearExistingObjects();
     }
 
-    // Create player UI
-    this.playerInitializer.createPlayerUI();
+    // Initialize scene manager
+    this.sceneManager = new SceneManager(this);
 
-    this.add
-      .text(512, 84, "Go back up", {
-        fontFamily: "Arial Black",
-        fontSize: 24,
-        color: "#ffffff",
-        stroke: "#000000",
-        strokeThickness: 4,
-        align: "center",
-      })
-      .setOrigin(0.5);
+    try {
+      // Load level data from JSON and wait for completion
+      await this.sceneManager.loadLevelData();
+      console.log("House1 level loaded successfully");
+    } catch (error) {
+      console.error("House1 level loading failed:", error);
+    }
 
     // Add screen edge detection
     this.setupScreenEdges();
+    console.log("House1 scene create() completed");
   }
 
   setupScreenEdges() {
@@ -47,6 +40,13 @@ export class House1 extends Scene {
     // Update player only if initialized
     if (this.playerInitializer && this.player) {
       this.playerInitializer.updatePlayer();
+
+      // Check door trigger zones for proximity detection
+      if (this.sceneManager) {
+        this.sceneManager.checkDoorTriggerZones();
+        // Check pass-through areas for z-index layering
+        this.sceneManager.checkPassThroughAreas();
+      }
 
       // Manual screen edge detection (backup method)
       if (this.player.sprite.y < 0) {

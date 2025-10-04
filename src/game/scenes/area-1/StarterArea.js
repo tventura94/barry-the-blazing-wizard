@@ -22,6 +22,9 @@ export class StarterArea extends Scene {
       // Load level data from JSON and wait for completion
       await this.sceneManager.loadLevelData();
       console.log("Level loaded successfully");
+
+      // Check if player is returning from a room and use stored position
+      this.handlePlayerReturnFromRoom();
     } catch (error) {
       console.error("Level loading failed:", error);
     }
@@ -34,6 +37,25 @@ export class StarterArea extends Scene {
   setupScreenEdges() {
     // Simple screen edge detection - no physics needed
     // The actual detection happens in the update() method
+  }
+
+  handlePlayerReturnFromRoom() {
+    // Check if player has a stored position from a room exit
+    if (this.registry.get("playerData")) {
+      const playerData = this.registry.get("playerData");
+      if (playerData.lastOpenWorldPosition && this.player) {
+        // Update player position to the stored open world position
+        this.player.x = playerData.lastOpenWorldPosition.x;
+        this.player.y = playerData.lastOpenWorldPosition.y;
+        if (this.player.sprite) {
+          this.player.sprite.x = playerData.lastOpenWorldPosition.x;
+          this.player.sprite.y = playerData.lastOpenWorldPosition.y;
+        }
+        console.log(
+          `Player returned to open world at stored position: (${playerData.lastOpenWorldPosition.x}, ${playerData.lastOpenWorldPosition.y})`
+        );
+      }
+    }
   }
 
   update() {

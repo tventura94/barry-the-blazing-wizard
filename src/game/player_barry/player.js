@@ -33,6 +33,7 @@ export class Player {
     this.spells = spells;
     this.quests = quests;
     this.facingDirection = "down"; // Default facing direction
+    this.lastOpenWorldPosition = { x: x, y: y }; // Track position before entering rooms
   }
   setCursorKeys(cursors) {
     this.cursors = cursors;
@@ -90,6 +91,22 @@ export class Player {
     this.y = this.sprite.y;
   }
 
+  // Update the last open world position (call before entering a room)
+  updateLastOpenWorldPosition() {
+    if (this.sprite) {
+      this.lastOpenWorldPosition.x = this.sprite.x;
+      this.lastOpenWorldPosition.y = this.sprite.y;
+      console.log(
+        `Updated last open world position: (${this.lastOpenWorldPosition.x}, ${this.lastOpenWorldPosition.y})`
+      );
+    }
+  }
+
+  // Get the last open world position
+  getLastOpenWorldPosition() {
+    return { ...this.lastOpenWorldPosition };
+  }
+
   // Methods for managing persistent data
   addSpell(spell) {
     if (!this.spells.includes(spell)) {
@@ -139,6 +156,7 @@ export class Player {
         skills: this.skills,
         spells: this.spells,
         quests: this.quests,
+        lastOpenWorldPosition: this.lastOpenWorldPosition,
       });
     }
   }
@@ -165,6 +183,10 @@ export class Player {
         this.skills = playerData.skills || [];
         this.spells = playerData.spells || [];
         this.quests = playerData.quests || [];
+        this.lastOpenWorldPosition = playerData.lastOpenWorldPosition || {
+          x: this.x,
+          y: this.y,
+        };
       }
     }
   }
