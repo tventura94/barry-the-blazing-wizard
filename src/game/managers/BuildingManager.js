@@ -12,7 +12,7 @@ export class BuildingManager {
       .setScale(buildingData.scale);
 
     // Set initial depth for the building (will be adjusted based on pass-through areas)
-    building.setDepth(100);
+    building.setDepth(buildingData.depth);
 
     // Handle multiple physics bodies if specified
     if (
@@ -155,9 +155,6 @@ export class BuildingManager {
         // Make it invisible
         passThroughBody.setVisible(false);
 
-        // Set depth to be above player (higher z-index) when player is not in pass-through area
-        passThroughBody.setDepth(200);
-
         // Debug visualization for pass-through bodies only if debug is enabled
         if (DEBUG_CONFIG.enabled && DEBUG_CONFIG.showPassThroughBodies) {
           const debugGraphics = this.scene.add.graphics();
@@ -170,18 +167,6 @@ export class BuildingManager {
           );
           passThroughBody.debugGraphics = debugGraphics;
         }
-
-        console.log(
-          `Pass-through body ${index} for building ${building.buildingId}:`,
-          {
-            size: {
-              width: passThroughBody.displayWidth,
-              height: passThroughBody.displayHeight,
-            },
-            position: { x: passThroughBody.x, y: passThroughBody.y },
-            depth: passThroughBody.depth,
-          }
-        );
 
         return passThroughBody;
       } else {

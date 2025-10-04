@@ -13,6 +13,7 @@
       "y": 500,
       "texture": "building1",
       "scale": 0.5,
+      "depth": 100,
       "physics": {
         "bodies": [
           {
@@ -64,6 +65,7 @@
       "y": 500,
       "texture": "building1",
       "scale": 0.5,
+      "depth": 100,
       "physics": {
         "bodies": [
           {
@@ -119,7 +121,7 @@
       "y": 190,
       "texture": "store1",
       "scale": 0.7,
-
+      "depth": 100,
       "physics": {
         "bodies": [
           {
@@ -137,11 +139,11 @@
             "type": "pass-through",
             "bodySize": {
               "width": 370,
-              "height": 150
+              "height": 100
             },
             "bodyOffset": {
               "x": 1,
-              "y": -30
+              "y": -60
             }
           }
         ]
@@ -176,6 +178,7 @@
       "x": 200,
       "y": 100,
       "texture": "tree1",
+      "depth": 100,
       "physics": {
         "bodies": [
           {
@@ -207,7 +210,8 @@
   "npcs": [],
   "player": {
     "x": 500,
-    "y": 600
+    "y": 600,
+    "depth": 110
   },
   "ui": {
     "text": "",

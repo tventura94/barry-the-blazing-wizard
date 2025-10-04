@@ -11,7 +11,7 @@ export class PlayerInitializer {
   // Initialize player with all setup
   initializePlayer(startX = 500, startY = 500) {
     // Create or load existing player
-    this.player = new Player(this.scene, startX, startY, "Hero");
+    this.player = new Player(this.scene, startX, startY, "Barry");
 
     // Try to load existing player data, if none exists, use defaults
     // Note: We don't load x,y from registry here as each scene controls starting position

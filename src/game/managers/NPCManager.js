@@ -38,13 +38,28 @@ export class NPCManager {
       // Set the NPC ID for reference
       npc.npcId = npcData.id;
 
+      // Set collision behavior - default to pass-through (false), but allow override
+      // To enable collision for an NPC, add "hasCollision": true to the NPC data in JSON
+      // Example JSON:
+      // {
+      //   "id": "vincent",
+      //   "x": 340,
+      //   "y": 450,
+      //   "texture": "vincent-standing",
+      //   "hasCollision": true,  // <-- This enables collision detection
+      //   "physics": { ... }
+      // }
+      npc.hasCollision =
+        npcData.hasCollision !== undefined ? npcData.hasCollision : false;
+
       // Apply scaling if specified
       if (npcData.scale !== undefined) {
         npc.setScale(npcData.scale);
       }
 
-      // Set initial depth
-      npc.setDepth(50);
+      // Set depth from JSON or use default
+      const depth = npcData.depth !== undefined ? npcData.depth : 50;
+      npc.setDepth(depth);
 
       // Handle physics bodies if specified
       if (
@@ -108,6 +123,19 @@ export class NPCManager {
 
       // Make NPC immovable (static)
       npc.body.setImmovable(true);
+
+      // Initialize pass-through bodies array if it doesn't exist
+      if (!npc.passThroughBodies) {
+        npc.passThroughBodies = [];
+      }
+
+      // Create a default pass-through body for all NPCs if none exist
+      if (npc.passThroughBodies.length === 0) {
+        const defaultPassThroughBody = this.createDefaultPassThroughBody(npc);
+        if (defaultPassThroughBody) {
+          npc.passThroughBodies.push(defaultPassThroughBody);
+        }
+      }
 
       // Create and play animation if specified
       if (npcData.animation) {
@@ -248,6 +276,57 @@ export class NPCManager {
     }
   }
 
+  createDefaultPassThroughBody(npc) {
+    try {
+      // Create a default pass-through body that covers the NPC sprite
+      const passThroughBody = this.scene.add.image(npc.x, npc.y, "transparent");
+
+      // Set size to match the NPC sprite size
+      passThroughBody.setDisplaySize(npc.displayWidth, npc.displayHeight);
+
+      // Store reference to parent NPC
+      passThroughBody.parentNPC = npc;
+      passThroughBody.bodyType = "pass-through";
+      passThroughBody.isDefault = true;
+
+      // Make it invisible
+      passThroughBody.setVisible(false);
+
+      // Set depth to be above player (higher z-index) when player is not in pass-through area
+      passThroughBody.setDepth(200);
+
+      // Debug visualization for pass-through bodies only if debug is enabled
+      if (DEBUG_CONFIG.enabled && DEBUG_CONFIG.showPassThroughBodies) {
+        const debugGraphics = this.scene.add.graphics();
+        debugGraphics.lineStyle(2, 0x00ff00, 1); // Green for pass-through bodies
+        debugGraphics.strokeRect(
+          passThroughBody.x - npc.displayWidth / 2,
+          passThroughBody.y - npc.displayHeight / 2,
+          npc.displayWidth,
+          npc.displayHeight
+        );
+        passThroughBody.debugGraphics = debugGraphics;
+      }
+
+      console.log(`Default pass-through body for NPC ${npc.npcId}:`, {
+        size: {
+          width: passThroughBody.displayWidth,
+          height: passThroughBody.displayHeight,
+        },
+        position: { x: passThroughBody.x, y: passThroughBody.y },
+        depth: passThroughBody.depth,
+      });
+
+      return passThroughBody;
+    } catch (error) {
+      console.error(
+        `Failed to create default pass-through body for NPC ${npc.npcId}:`,
+        error
+      );
+      return null;
+    }
+  }
+
   createNPCAnimation(animationConfig) {
     // Create animation if it doesn't already exist
     if (!this.scene.anims.exists(animationConfig.key)) {
@@ -284,7 +363,7 @@ export class NPCManager {
           });
         }
 
-        // Destroy pass-through bodies
+        // Destroy pass-through bodies (including default ones)
         if (npc.passThroughBodies) {
           npc.passThroughBodies.forEach((passThroughBody) => {
             if (passThroughBody) {

@@ -10,6 +10,7 @@ export class SceneManager {
     this.propManager = new PropManager(scene);
     this.npcManager = new NPCManager(scene);
     this.playerInBuilding = null; // Track which building the player is currently near
+    this.playerOriginalDepth = null; // Will be set from JSON data
   }
 
   async loadLevelData() {
@@ -72,6 +73,9 @@ export class SceneManager {
       levelData.player.y
     );
     this.scene.playerInitializer.createPlayerUI();
+
+    // Store player's original depth from JSON data
+    this.playerOriginalDepth = levelData.player.depth;
 
     // Set up collisions with custom callback
     this.scene.buildings.forEach((building) => {
@@ -158,38 +162,54 @@ export class SceneManager {
       }
     });
 
-    // Set up collisions between player and NPCs
+    // Set up NPCs with optional collision detection
     this.scene.npcs.forEach((npc) => {
-      console.log(`Setting up collision between player and NPC ${npc.npcId}`);
+      if (npc.hasCollision) {
+        console.log(`Setting up collision detection for NPC ${npc.npcId}`);
 
-      // Main NPC physics body
-      this.scene.physics.add.collider(
-        this.scene.player.sprite,
-        npc,
-        this.handlePlayerNPCCollision.bind(this),
-        null,
-        this.scene
-      );
-
-      // Additional collision bodies for multiple collision areas
-      if (npc.additionalBodies && npc.additionalBodies.length > 0) {
-        npc.additionalBodies.forEach((additionalBody, index) => {
-          console.log(`  Setting up collision with additional body ${index}`);
-          this.scene.physics.add.collider(
-            this.scene.player.sprite,
-            additionalBody,
-            this.handlePlayerNPCCollision.bind(this),
-            null,
-            this.scene
-          );
-        });
-      }
-
-      // Pass-through bodies don't need collision detection, they handle z-index layering
-      if (npc.passThroughBodies && npc.passThroughBodies.length > 0) {
-        console.log(
-          `  Pass-through bodies: ${npc.passThroughBodies.length} (no collision detection)`
+        // Main NPC physics body collision
+        this.scene.physics.add.collider(
+          this.scene.player.sprite,
+          npc,
+          this.handlePlayerNPCCollision.bind(this),
+          null,
+          this.scene
         );
+
+        // Additional collision bodies for multiple collision areas
+        if (npc.additionalBodies && npc.additionalBodies.length > 0) {
+          npc.additionalBodies.forEach((additionalBody, index) => {
+            console.log(`  Setting up collision with additional body ${index}`);
+            this.scene.physics.add.collider(
+              this.scene.player.sprite,
+              additionalBody,
+              this.handlePlayerNPCCollision.bind(this),
+              null,
+              this.scene
+            );
+          });
+        }
+
+        // Pass-through bodies for collision NPCs still handle z-index layering
+        if (npc.passThroughBodies && npc.passThroughBodies.length > 0) {
+          console.log(
+            `  Pass-through bodies: ${npc.passThroughBodies.length} (handles z-index layering)`
+          );
+        }
+      } else {
+        console.log(
+          `Setting up NPC ${npc.npcId} for pass-through behavior (no collision)`
+        );
+
+        // NPCs are pass-through - no collision detection with player
+        // The pass-through bodies handle z-index layering to make player disappear behind NPCs
+        if (npc.passThroughBodies && npc.passThroughBodies.length > 0) {
+          console.log(
+            `  Pass-through bodies: ${npc.passThroughBodies.length} (handles z-index layering)`
+          );
+        } else {
+          console.log(`  No pass-through bodies found for NPC ${npc.npcId}`);
+        }
       }
     });
 
@@ -275,6 +295,7 @@ export class SceneManager {
       y: playerY,
       isPlayer: true,
       isInPassThroughArea: isInPassThroughArea,
+      customDepth: this.playerOriginalDepth, // Store the original depth for reference
     });
 
     // Add NPCs
@@ -286,6 +307,7 @@ export class SceneManager {
             y: npc.y,
             isPlayer: false,
             isInPassThroughArea: false,
+            customDepth: npc.depth, // Store the custom depth for reference
           });
         }
       });
@@ -301,6 +323,10 @@ export class SceneManager {
       // If player is in a pass-through area, put them behind everything
       if (item.isPlayer && item.isInPassThroughArea) {
         depth = 50;
+      }
+      // If sprite has a custom depth, use it instead of the calculated depth
+      else if (item.customDepth !== undefined) {
+        depth = item.customDepth;
       }
 
       item.sprite.setDepth(depth);
