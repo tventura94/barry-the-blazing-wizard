@@ -185,18 +185,18 @@
             "type": "collision",
             "bodySize": {
               "width": 70,
-              "height": 130
+              "height": 30
             },
             "bodyOffset": {
               "x": 212,
-              "y": 260
+              "y": 350
             }
           },
           {
             "type": "pass-through",
             "bodySize": {
               "width": 350,
-              "height": 140
+              "height": 210
             },
             "bodyOffset": {
               "x": 0,

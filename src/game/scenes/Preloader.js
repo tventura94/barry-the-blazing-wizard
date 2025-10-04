@@ -37,6 +37,7 @@ export class Preloader extends Scene {
     this.load.image("store1", "buildings/store1.png");
     this.load.image("store1-door-open", "buildings/store1-door-open.png");
     this.load.image("vincents-counter", "props/vincents-counter.png");
+    this.load.image("npc1", "npcs/npc1.png");
     // Load the wizard character sprite sheet
     this.load.spritesheet("wizard-walk", "barry-sprites/walk.png", {
       frameWidth: 64, // Each frame is 64 pixels wide
