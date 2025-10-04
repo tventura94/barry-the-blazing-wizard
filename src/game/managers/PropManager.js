@@ -43,8 +43,9 @@ export class PropManager {
         prop.setScale(propData.scale);
       }
 
-      // Set initial depth for the prop (will be adjusted based on pass-through areas)
-      prop.setDepth(100);
+      // Set depth for the prop (use JSON config or default to 100)
+      const depth = propData.depth !== undefined ? propData.depth : 100;
+      prop.setDepth(depth);
 
       // Handle multiple physics bodies if specified
       if (

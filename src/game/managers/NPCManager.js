@@ -40,10 +40,10 @@ export class NPCManager {
       // Set initial depth
       npc.setDepth(50);
 
-      // Create standing animation if it's Vincent
-      if (npcData.id === "vincent") {
-        this.createVincentAnimations();
-        npc.play("vincent-standing");
+      // Create and play animation if specified
+      if (npcData.animation) {
+        this.createNPCAnimation(npcData.animation);
+        npc.play(npcData.animation.key);
       }
 
       console.log(`Created NPC: ${npcData.id} at (${npcData.x}, ${npcData.y})`);
@@ -54,20 +54,15 @@ export class NPCManager {
     }
   }
 
-  createVincentAnimations() {
-    // Create Vincent's standing animation using top 3 frames in a natural sequence
-    if (!this.scene.anims.exists("vincent-standing")) {
+  createNPCAnimation(animationConfig) {
+    // Create animation if it doesn't already exist
+    if (!this.scene.anims.exists(animationConfig.key)) {
       this.scene.anims.create({
-        key: "vincent-standing",
-        frames: [
-          { key: "vincent-standing", frame: 0 }, // Top-left (hands clasped)
-          { key: "vincent-standing", frame: 1 }, // Top-middle (hands slightly less clasped)
-          { key: "vincent-standing", frame: 0 }, // Back to top-left
-          { key: "vincent-standing", frame: 1 }, // Top-right (right hand raised)
-          { key: "vincent-standing", frame: 0 }, // Back to top-left
-        ],
-        frameRate: 2, // Slow, gentle animation
-        repeat: -1, // Loop forever
+        key: animationConfig.key,
+        frames: animationConfig.frames,
+        frameRate: animationConfig.frameRate || 3,
+        repeat:
+          animationConfig.repeat !== undefined ? animationConfig.repeat : -1,
       });
     }
   }

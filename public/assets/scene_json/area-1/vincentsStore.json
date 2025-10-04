@@ -46,14 +46,234 @@
       }
     }
   ],
-  "props": [],
+  "props": [
+    {
+      "id": "oak-wall-1",
+      "x": 50,
+      "y": 395,
+      "texture": "oak-wall",
+      "scale": 0.12,
+      "depth": 30,
+      "physics": {
+        "bodies": [
+          {
+            "type": "collision",
+            "bodySize": {
+              "width": 100,
+              "height": 800
+            },
+            "bodyOffset": {
+              "x": 0,
+              "y": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "oak-wall-2",
+      "x": 172,
+      "y": 395,
+      "texture": "oak-wall",
+      "scale": 0.12,
+      "depth": 30,
+      "physics": {
+        "bodies": [
+          {
+            "type": "collision",
+            "bodySize": {
+              "width": 100,
+              "height": 200
+            },
+            "bodyOffset": {
+              "x": 0,
+              "y": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "oak-wall-3",
+      "x": 294,
+      "y": 395,
+      "texture": "oak-wall",
+      "scale": 0.12,
+      "depth": 30,
+      "physics": {
+        "bodies": [
+          {
+            "type": "collision",
+            "bodySize": {
+              "width": 100,
+              "height": 200
+            },
+            "bodyOffset": {
+              "x": 0,
+              "y": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "oak-wall-4",
+      "x": 416,
+      "y": 395,
+      "texture": "oak-wall",
+      "scale": 0.12,
+      "depth": 30,
+      "physics": {
+        "bodies": [
+          {
+            "type": "collision",
+            "bodySize": {
+              "width": 100,
+              "height": 200
+            },
+            "bodyOffset": {
+              "x": 0,
+              "y": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "oak-wall-5",
+      "x": 538,
+      "y": 395,
+      "texture": "oak-wall",
+      "scale": 0.12,
+      "depth": 30,
+      "physics": {
+        "bodies": [
+          {
+            "type": "collision",
+            "bodySize": {
+              "width": 100,
+              "height": 200
+            },
+            "bodyOffset": {
+              "x": 0,
+              "y": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "oak-wall-6",
+      "x": 660,
+      "y": 395,
+      "texture": "oak-wall",
+      "scale": 0.12,
+      "depth": 30,
+      "physics": {
+        "bodies": [
+          {
+            "type": "collision",
+            "bodySize": {
+              "width": 100,
+              "height": 200
+            },
+            "bodyOffset": {
+              "x": 0,
+              "y": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "oak-wall-7",
+      "x": 782,
+      "y": 395,
+      "texture": "oak-wall",
+      "scale": 0.12,
+      "depth": 30,
+      "physics": {
+        "bodies": [
+          {
+            "type": "collision",
+            "bodySize": {
+              "width": 1080,
+              "height": 537
+            },
+            "bodyOffset": {
+              "x": -300,
+              "y": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "oak-wall-8",
+      "x": 904,
+      "y": 395,
+      "texture": "oak-wall",
+      "scale": 0.12,
+      "depth": 30,
+      "physics": {
+        "bodies": [
+          {
+            "type": "collision",
+            "bodySize": {
+              "width": 100,
+              "height": 200
+            },
+            "bodyOffset": {
+              "x": 0,
+              "y": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "oak-wall-9",
+      "x": 970,
+      "y": 395,
+      "texture": "oak-wall",
+      "scale": 0.12,
+      "depth": 30,
+      "physics": {
+        "bodies": [
+          {
+            "type": "collision",
+            "bodySize": {
+              "width": 100,
+              "height": 200
+            },
+            "bodyOffset": {
+              "x": 0,
+              "y": 0
+            }
+          }
+        ]
+      }
+    }
+  ],
   "npcs": [
     {
       "id": "vincent",
       "x": 350,
       "y": 460,
       "texture": "vincent-standing",
-      "scale": 0.28
+      "scale": 0.28,
+      "animation": {
+        "key": "vincent-standing",
+        "frames": [
+          { "key": "vincent-standing", "frame": 0 },
+          { "key": "vincent-standing", "frame": 1 },
+          { "key": "vincent-standing", "frame": 0 },
+          { "key": "vincent-standing", "frame": 1 },
+          { "key": "vincent-standing", "frame": 0 }
+        ],
+        "frameRate": 2,
+        "repeat": -1
+      }
     }
   ],
   "player": {
