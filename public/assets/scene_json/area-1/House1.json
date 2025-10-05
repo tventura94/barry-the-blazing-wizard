@@ -94,9 +94,9 @@
 
       "combatData": {
         "name": "Guitar Warrior",
-        "health": 100,
-        "attack": 15,
-        "defense": 10,
+        "health": 80,
+        "attack": 18,
+        "defense": 8,
         "speed": 8
       },
       "patrolData": {

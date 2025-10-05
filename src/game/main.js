@@ -5,7 +5,7 @@ import { MainMenu } from "./scenes/MainMenu";
 import { Preloader } from "./scenes/Preloader";
 import { House1 } from "./scenes/area-1/rooms/House1";
 import { VincentsStore } from "./scenes/area-1/rooms/VincentsStore";
-import { GuitarHeroCombat } from "./scenes/GuitarHeroCombat";
+import { TurnBasedCombat } from "./scenes/TurnBasedCombat";
 import { AUTO, Game } from "phaser";
 
 // Debug configuration - set to false to disable all debug visualizations
@@ -42,7 +42,7 @@ const config = {
     GameOver,
     VincentsStore,
     House1,
-    GuitarHeroCombat,
+    TurnBasedCombat,
   ],
 };
 

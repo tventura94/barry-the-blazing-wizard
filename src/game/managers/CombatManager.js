@@ -303,7 +303,7 @@ export class CombatManager {
     this.isInCombat = true;
 
     // Transition to combat scene
-    this.scene.scene.start("GuitarHeroCombat", {
+    this.scene.scene.start("TurnBasedCombat", {
       combatData: combatData,
       playerData: this.scene.player,
       returnScene: this.scene.scene.key,
