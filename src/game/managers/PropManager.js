@@ -28,15 +28,27 @@ export class PropManager {
 
   createProp(propData) {
     try {
-      // Create the prop sprite with physics body directly (same as buildings)
-      const prop = this.scene.physics.add.staticImage(
-        propData.x,
-        propData.y,
-        propData.texture
-      );
+      // Create the prop sprite with physics body
+      // Use sprite for animated props, staticImage for static props
+      const prop = propData.animation
+        ? this.scene.physics.add.sprite(
+            propData.x,
+            propData.y,
+            propData.texture
+          )
+        : this.scene.physics.add.staticImage(
+            propData.x,
+            propData.y,
+            propData.texture
+          );
 
       // Set the prop ID for reference
       prop.propId = propData.id;
+
+      // Make animated props immovable like static props
+      if (propData.animation) {
+        prop.body.setImmovable(true);
+      }
 
       // Apply scaling if specified
       if (propData.scale !== undefined) {
@@ -46,6 +58,19 @@ export class PropManager {
       // Set depth for the prop (use JSON config or default to 100)
       const depth = propData.depth !== undefined ? propData.depth : 100;
       prop.setDepth(depth);
+
+      // Create and play animation if specified
+      if (propData.animation) {
+        console.log(
+          `Creating animation for prop ${propData.id}:`,
+          propData.animation
+        );
+        this.createPropAnimation(propData.animation);
+        console.log(
+          `Playing animation "${propData.animation.key}" for prop ${propData.id}`
+        );
+        prop.play(propData.animation.key);
+      }
 
       // Handle multiple physics bodies if specified
       if (
@@ -246,6 +271,50 @@ export class PropManager {
         error
       );
       return null;
+    }
+  }
+
+  createPropAnimation(animationConfig) {
+    // Create animation if it doesn't already exist
+    if (!this.scene.anims.exists(animationConfig.key)) {
+      console.log(
+        `Creating new animation: ${animationConfig.key}`,
+        animationConfig
+      );
+
+      // Use generateFrameNumbers if frames array is not provided
+      let frames;
+      if (animationConfig.frames) {
+        frames = animationConfig.frames;
+      } else if (
+        animationConfig.spriteKey &&
+        animationConfig.startFrame !== undefined &&
+        animationConfig.endFrame !== undefined
+      ) {
+        frames = this.scene.anims.generateFrameNumbers(
+          animationConfig.spriteKey,
+          {
+            start: animationConfig.startFrame,
+            end: animationConfig.endFrame,
+          }
+        );
+      } else {
+        console.error(
+          `Invalid animation config for ${animationConfig.key}: missing frames or spriteKey/startFrame/endFrame`
+        );
+        return;
+      }
+
+      this.scene.anims.create({
+        key: animationConfig.key,
+        frames: frames,
+        frameRate: animationConfig.frameRate || 3,
+        repeat:
+          animationConfig.repeat !== undefined ? animationConfig.repeat : -1,
+      });
+      console.log(`Animation "${animationConfig.key}" created successfully`);
+    } else {
+      console.log(`Animation "${animationConfig.key}" already exists`);
     }
   }
 

@@ -29,6 +29,10 @@ export class Preloader extends Scene {
 
     this.load.image("logo", "logo.png");
     this.load.image("background", "bg.png");
+    this.load.image(
+      "starter-area-background",
+      "scene-backgrounds/starter-area-background.png"
+    );
     this.load.image("building1", "buildings/building1.png");
     this.load.image("building1-door-open", "buildings/building1-door-open.png");
     this.load.image("tree1", "props/tree1.png");
@@ -38,6 +42,12 @@ export class Preloader extends Scene {
     this.load.image("store1-door-open", "buildings/store1-door-open.png");
     this.load.image("vincents-counter", "props/vincents-counter.png");
     this.load.image("npc1", "npcs/npc1.png");
+    // Load the bush sprite sheet (16 frames in 4x4 grid)
+    this.load.spritesheet("bush", "props/bush.png", {
+      frameWidth: 256, // 1024/4 = 256 pixels per frame
+      frameHeight: 256, // 1024/4 = 256 pixels per frame
+      endFrame: 15, // 16 frames total (0-15)
+    });
     // Load the wizard character sprite sheet
     this.load.spritesheet("wizard-walk", "barry-sprites/walk.png", {
       frameWidth: 64, // Each frame is 64 pixels wide

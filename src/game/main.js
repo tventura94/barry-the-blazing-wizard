@@ -10,7 +10,7 @@ import { AUTO, Game } from "phaser";
 
 // Debug configuration - set to false to disable all debug visualizations
 export const DEBUG_CONFIG = {
-  enabled: true, // THIS TRIGGERS DEBUGGING
+  enabled: false, // THIS TRIGGERS DEBUGGING
   showCollisionBodies: true, // Red rectangles for additional collision bodies
   showPassThroughBodies: true, // Green rectangles for pass-through areas
 };
