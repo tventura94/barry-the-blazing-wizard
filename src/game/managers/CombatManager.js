@@ -293,6 +293,10 @@ export class CombatManager {
 
     // Use the existing dialog system
     if (this.scene.sceneManager && this.scene.sceneManager.dialogManager) {
+      // Ensure dialog UI is created before showing dialog
+      if (!this.scene.sceneManager.dialogManager.dialogBox) {
+        this.scene.sceneManager.dialogManager.createDialogUI();
+      }
       this.scene.sceneManager.dialogManager.currentDialog = combatDialog;
       this.scene.sceneManager.dialogManager.showDialog();
     }

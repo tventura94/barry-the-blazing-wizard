@@ -1,6 +1,5 @@
 import { Scene } from "phaser";
 import { SceneManager } from "../../../managers/SceneManager.js";
-import { DialogManager } from "../../../managers/DialogManager/DialogManager.js";
 import { VincentsStoreDialogs } from "../../../managers/DialogManager/VincentsStore/VincentsStoreDialogs.js";
 
 export class VincentsStore extends Scene {
@@ -20,15 +19,16 @@ export class VincentsStore extends Scene {
     // Initialize scene manager
     this.sceneManager = new SceneManager(this);
 
-    // Initialize dialog system
-    this.dialogManager = new DialogManager(this);
+    // Initialize dialog controller (DialogManager will be created by SceneManager)
     this.vincentsstoreDialogController = new VincentsStoreDialogs(this);
-    this.dialogManager.createDialogUI();
 
     try {
       // Load level data from JSON and wait for completion
       await this.sceneManager.loadLevelData();
       console.log("VincentsStore level loaded successfully");
+
+      // Initialize dialog UI after level data is loaded
+      this.sceneManager.dialogManager.createDialogUI();
     } catch (error) {
       console.error("VincentsStore level loading failed:", error);
     }
@@ -56,8 +56,8 @@ export class VincentsStore extends Scene {
       }
 
       // Update dialog system
-      if (this.dialogManager) {
-        this.dialogManager.update();
+      if (this.sceneManager && this.sceneManager.dialogManager) {
+        this.sceneManager.dialogManager.update();
       }
 
       // Manual screen edge detection (backup method)

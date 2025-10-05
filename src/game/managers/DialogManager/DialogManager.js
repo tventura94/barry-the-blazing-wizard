@@ -16,14 +16,16 @@ export class DialogManager {
 
   // Create dialog UI elements
   createDialogUI() {
-    const centerX = this.scene.cameras.main.width / 2;
-    const centerY = this.scene.cameras.main.height / 2;
+    const cameraWidth = this.scene.cameras.main.width || 800;
+    const cameraHeight = this.scene.cameras.main.height || 600;
+    const centerX = cameraWidth / 2;
+    const centerY = cameraHeight / 2;
 
     // Create dialog box background
     this.dialogBox = this.scene.add.rectangle(
       centerX,
-      this.scene.cameras.main.height - 100,
-      this.scene.cameras.main.width - 40,
+      cameraHeight - 100,
+      cameraWidth - 40,
       150,
       0x000000,
       0.9
@@ -32,26 +34,23 @@ export class DialogManager {
     this.dialogBox.setVisible(false);
 
     // Create dialog text
-    this.dialogText = this.scene.add.text(
-      centerX,
-      this.scene.cameras.main.height - 140,
-      "",
-      {
-        fontFamily: "Arial",
-        fontSize: "18px",
-        color: "#ffffff",
-        wordWrap: { width: this.scene.cameras.main.width - 80 },
-        align: "center",
-      }
-    );
+    this.dialogText = this.scene.add.text(centerX, cameraHeight - 140, "", {
+      fontFamily: "Arial",
+      fontSize: "18px",
+      color: "#ffffff",
+      wordWrap: { width: cameraWidth - 80 },
+      align: "center",
+    });
     this.dialogText.setOrigin(0.5);
     this.dialogText.setDepth(1001);
     this.dialogText.setVisible(false);
+    this.dialogText.setAlpha(0);
+    this.dialogText.setActive(false);
 
     // Create continue prompt
     this.continuePrompt = this.scene.add.text(
       centerX,
-      this.scene.cameras.main.height - 60,
+      cameraHeight - 60,
       "Press SPACE to continue or ESC to close",
       {
         fontFamily: "Arial",
@@ -64,10 +63,7 @@ export class DialogManager {
     this.continuePrompt.setVisible(false);
 
     // Create choice container
-    this.choiceContainer = this.scene.add.container(
-      centerX,
-      this.scene.cameras.main.height - 80
-    );
+    this.choiceContainer = this.scene.add.container(centerX, cameraHeight - 80);
     this.choiceContainer.setDepth(1001);
     this.choiceContainer.setVisible(false);
 
@@ -176,6 +172,11 @@ export class DialogManager {
     this.currentNPC = npc;
     const npcId = npc.npcId;
 
+    // Ensure dialog UI is created before showing dialog
+    if (!this.dialogBox) {
+      this.createDialogUI();
+    }
+
     // Get dialog data from the scene's dialog controller
     const dialogController = this.getDialogController();
     if (dialogController) {
@@ -205,8 +206,17 @@ export class DialogManager {
     console.log("Showing dialog:", this.currentDialog.id);
     this.isDialogActive = true;
 
+    // Dialog UI is freshly created, no need to clear or reset
+
     // Ensure dialog elements are properly positioned
     this.updateDialogPosition();
+
+    // Make sure text is properly positioned before making it visible
+    if (this.dialogText) {
+      const cameraWidth = this.scene.cameras.main.width || 800;
+      const cameraHeight = this.scene.cameras.main.height || 600;
+      this.dialogText.setPosition(cameraWidth / 2, cameraHeight - 140);
+    }
 
     this.dialogBox.setVisible(true);
     this.dialogText.setVisible(true);
@@ -249,11 +259,15 @@ export class DialogManager {
       return;
     }
 
-    const centerX = this.scene.cameras.main.width / 2;
-    const dialogY = this.scene.cameras.main.height - 100;
-    const textY = this.scene.cameras.main.height - 140;
-    const promptY = this.scene.cameras.main.height - 60;
-    const choiceY = this.scene.cameras.main.height - 80;
+    // Safety check for camera dimensions
+    const cameraWidth = this.scene.cameras.main.width || 800;
+    const cameraHeight = this.scene.cameras.main.height || 600;
+
+    const centerX = cameraWidth / 2;
+    const dialogY = cameraHeight - 100;
+    const textY = cameraHeight - 140;
+    const promptY = cameraHeight - 60;
+    const choiceY = cameraHeight - 80;
 
     console.log("Updating dialog position:", {
       centerX,
@@ -261,31 +275,23 @@ export class DialogManager {
       textY,
       promptY,
       choiceY,
-      cameraWidth: this.scene.cameras.main.width,
-      cameraHeight: this.scene.cameras.main.height,
+      cameraWidth,
+      cameraHeight,
     });
 
     // Update dialog box position
     this.dialogBox.setPosition(centerX, dialogY);
-    this.dialogBox.setSize(this.scene.cameras.main.width - 40, 150);
+    this.dialogBox.setSize(cameraWidth - 40, 150);
 
     // Update dialog text position
     this.dialogText.setPosition(centerX, textY);
-    this.dialogText.setWordWrapWidth(this.scene.cameras.main.width - 80);
+    this.dialogText.setWordWrapWidth(cameraWidth - 80);
 
     // Update continue prompt position
     this.continuePrompt.setPosition(centerX, promptY);
 
     // Update choice container position
     this.choiceContainer.setPosition(centerX, choiceY);
-
-    // Ensure all elements are properly reset and hidden
-    this.choiceContainer.setVisible(false);
-    this.dialogText.setVisible(false);
-    this.dialogText.setAlpha(0);
-    this.dialogText.setActive(false);
-    this.continuePrompt.setVisible(false);
-    this.dialogBox.setVisible(false);
   }
 
   // Display dialog text with typewriter effect
@@ -294,6 +300,13 @@ export class DialogManager {
     if (this.typewriterTimer) {
       this.typewriterTimer.destroy();
       this.typewriterTimer = null;
+    }
+
+    // Ensure text is properly positioned before displaying
+    if (this.dialogText) {
+      const cameraWidth = this.scene.cameras.main.width || 800;
+      const cameraHeight = this.scene.cameras.main.height || 600;
+      this.dialogText.setPosition(cameraWidth / 2, cameraHeight - 140);
     }
 
     this.dialogText.setText("");
@@ -339,7 +352,7 @@ export class DialogManager {
       const choiceBg = this.scene.add.rectangle(
         0,
         choiceY,
-        400,
+        Math.min(400, this.scene.cameras.main.width - 80),
         25,
         0x333333,
         0.8
@@ -370,8 +383,42 @@ export class DialogManager {
     });
   }
 
+  // Clear choice elements
+  clearChoices() {
+    if (this.choiceContainer) {
+      console.log(
+        "Clearing choices, current container children:",
+        this.choiceContainer.list.length
+      );
+      // Properly destroy existing choice elements before removing them
+      this.choiceContainer.list.forEach((child) => {
+        if (child && child.destroy) {
+          child.destroy();
+        }
+      });
+      this.choiceContainer.removeAll();
+      this.choiceContainer.setVisible(false);
+      console.log("Choices cleared successfully");
+    }
+  }
+
+  // Reset dialog elements to clean state
+  resetDialogElements() {
+    // Hide all dialog elements
+    if (this.dialogBox) this.dialogBox.setVisible(false);
+    if (this.dialogText) {
+      this.dialogText.setVisible(false);
+      this.dialogText.setAlpha(0);
+      this.dialogText.setActive(false);
+      this.dialogText.setText("");
+    }
+    if (this.continuePrompt) this.continuePrompt.setVisible(false);
+    if (this.choiceContainer) this.choiceContainer.setVisible(false);
+  }
+
   // Handle choice selection
   selectChoice(choiceIndex) {
+    console.log("Choice selected:", choiceIndex);
     const choice = this.currentDialog.choices[choiceIndex];
 
     // Execute choice actions
@@ -379,11 +426,23 @@ export class DialogManager {
       this.executeActions(choice.actions);
     }
 
+    // Destroy typewriter timer if it exists
+    if (this.typewriterTimer) {
+      this.typewriterTimer.destroy();
+      this.typewriterTimer = null;
+    }
+
+    // Completely destroy and recreate dialog UI to ensure clean state
+    this.destroyDialogUI();
+    this.createDialogUI();
+
     // Move to next dialog or close
     if (choice.nextDialog) {
+      console.log("Moving to next dialog:", choice.nextDialog.id);
       this.currentDialog = choice.nextDialog;
       this.showDialog();
     } else {
+      console.log("No next dialog, closing");
       this.closeDialog();
     }
   }

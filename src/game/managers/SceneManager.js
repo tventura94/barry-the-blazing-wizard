@@ -76,8 +76,7 @@ export class SceneManager {
     );
     this.scene.playerInitializer.createPlayerUI();
 
-    // Initialize dialog system
-    this.dialogManager.createDialogUI();
+    // Dialog UI will be created by the scene if needed
 
     // Store player's original depth from JSON data
     this.playerOriginalDepth = levelData.player.depth;
