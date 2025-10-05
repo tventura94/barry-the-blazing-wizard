@@ -5,11 +5,12 @@ import { MainMenu } from "./scenes/MainMenu";
 import { Preloader } from "./scenes/Preloader";
 import { House1 } from "./scenes/area-1/rooms/House1";
 import { VincentsStore } from "./scenes/area-1/rooms/VincentsStore";
+import { GuitarHeroCombat } from "./scenes/GuitarHeroCombat";
 import { AUTO, Game } from "phaser";
 
 // Debug configuration - set to false to disable all debug visualizations
 export const DEBUG_CONFIG = {
-  enabled: true, // THIS TRIGGERS DEBUGGING
+  enabled: false, // THIS TRIGGERS DEBUGGING
   showCollisionBodies: true, // Red rectangles for additional collision bodies
   showPassThroughBodies: true, // Green rectangles for pass-through areas
 };
@@ -33,7 +34,16 @@ const config = {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
   },
-  scene: [Boot, Preloader, MainMenu, MainGame, GameOver, VincentsStore, House1],
+  scene: [
+    Boot,
+    Preloader,
+    MainMenu,
+    MainGame,
+    GameOver,
+    VincentsStore,
+    House1,
+    GuitarHeroCombat,
+  ],
 };
 
 const StartGame = (parent) => {
