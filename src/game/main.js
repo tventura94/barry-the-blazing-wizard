@@ -13,6 +13,7 @@ export const DEBUG_CONFIG = {
   enabled: true, // THIS TRIGGERS DEBUGGING
   showCollisionBodies: true, // Red rectangles for additional collision bodies
   showPassThroughBodies: true, // Green rectangles for pass-through areas
+  showGrid: true, // Show grid overlay for tilemap alignment
 };
 
 //  Find out more information about the Game Config at:

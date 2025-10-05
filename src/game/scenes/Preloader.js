@@ -33,6 +33,15 @@ export class Preloader extends Scene {
       "starter-area-background",
       "scene-backgrounds/starter-area-background.png"
     );
+    // Load tilemap assets for StarterArea
+    this.load.tilemapTiledJSON(
+      "StarterArea",
+      "scene-backgrounds/StarterArea.tmj"
+    );
+    this.load.image(
+      "4_Seasons_Ground_Tiles",
+      "scene-backgrounds/4_Seasons_Ground_Tiles.png"
+    );
     this.load.image("building1", "buildings/building1.png");
     this.load.image("building1-door-open", "buildings/building1-door-open.png");
     this.load.image("tree1", "props/tree1.png");

@@ -2,10 +2,9 @@
   "name": "Level 1",
   "worldType": "open",
   "background": {
-    "image": "starter-area-background",
-    "x": 512,
-    "y": 384,
-    "alpha": 1.0
+    "type": "tilemap",
+    "tileset": "4_Seasons_Ground_Tiles",
+    "layer": "Tile Layer 1"
   },
   "buildings": [
     {

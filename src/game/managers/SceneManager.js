@@ -4,6 +4,7 @@ import { NPCManager } from "./NPCManager.js";
 import { CombatManager } from "./CombatManager.js";
 import { DialogManager } from "./DialogManager/DialogManager.js";
 import { PlayerInitializer } from "../player_barry/playerInitializer.js";
+import { DEBUG_CONFIG } from "../main.js";
 
 export class SceneManager {
   constructor(scene) {
@@ -45,14 +46,45 @@ export class SceneManager {
     // Clear existing objects first
     this.clearExistingObjects();
 
-    // Create background
-    this.scene.add
-      .image(
-        levelData.background.x,
-        levelData.background.y,
-        levelData.background.image
-      )
-      .setAlpha(levelData.background.alpha);
+    // Create background based on scene configuration
+    const sceneName = this.scene.scene.key;
+
+    if (levelData.background && levelData.background.type === "tilemap") {
+      // Use tilemap when explicitly configured
+      this.map = this.scene.make.tilemap({ key: sceneName });
+
+      // Get tileset and layer names from configuration
+      const tilesetName = levelData.background.tileset;
+      const layerName = levelData.background.layer;
+
+      const tileset = this.map.addTilesetImage(tilesetName);
+
+      if (tileset) {
+        this.backgroundLayer = this.map.createLayer(layerName, tileset);
+        this.backgroundLayer.setDepth(-100);
+        console.log(
+          `Loaded tilemap for ${sceneName} with tileset: ${tilesetName}, layer: ${layerName}`
+        );
+      } else {
+        console.error(
+          `Failed to load tileset "${tilesetName}" for ${sceneName}`
+        );
+        // Fallback to single image background
+        this.scene.add
+          .image(512, 384, "starter-area-background")
+          .setDepth(-100);
+      }
+    } else if (levelData.background) {
+      // Use regular image background
+      this.scene.add
+        .image(
+          levelData.background.x,
+          levelData.background.y,
+          levelData.background.image
+        )
+        .setAlpha(levelData.background.alpha)
+        .setDepth(-100);
+    }
 
     // Create buildings from data using BuildingManager
     this.scene.buildings =
@@ -242,6 +274,11 @@ export class SceneManager {
         levelData.ui.style
       )
       .setOrigin(0.5);
+
+    // Create debug grid overlay if enabled
+    if (DEBUG_CONFIG.enabled && DEBUG_CONFIG.showGrid) {
+      this.createGridOverlay();
+    }
   }
 
   clearExistingObjects() {
@@ -617,6 +654,111 @@ export class SceneManager {
 
       // Start the target scene
       this.scene.scene.start(doorZone.targetScene);
+    }
+  }
+
+  // Create grid overlay for tilemap alignment
+  createGridOverlay() {
+    if (this.map) {
+      // Use tilemap dimensions if available
+      const tileWidth = this.map.tileWidth;
+      const tileHeight = this.map.tileHeight;
+      const mapWidth = this.map.widthInPixels;
+      const mapHeight = this.map.heightInPixels;
+
+      this.createGridLines(tileWidth, tileHeight, mapWidth, mapHeight);
+    } else {
+      // Use default grid for scenes without tilemaps
+      this.createGridLines(32, 32, 1024, 768);
+    }
+  }
+
+  // Create grid lines
+  createGridLines(tileWidth, tileHeight, mapWidth, mapHeight) {
+    const graphics = this.scene.add.graphics();
+    graphics.setDepth(1000); // Above everything else
+
+    // Draw minor grid lines (every tile) - thin and subtle
+    graphics.lineStyle(1, 0x00ff00, 0.2); // Very light green lines
+
+    for (let x = 0; x <= mapWidth; x += tileWidth) {
+      graphics.moveTo(x, 0);
+      graphics.lineTo(x, mapHeight);
+    }
+
+    for (let y = 0; y <= mapHeight; y += tileHeight) {
+      graphics.moveTo(0, y);
+      graphics.lineTo(mapWidth, y);
+    }
+
+    // Draw major grid lines (every 10 tiles) - thick and prominent
+    graphics.lineStyle(2, 0x00ff00, 0.8); // Bright green, thick lines
+
+    const majorGridSpacing = tileWidth * 10; // Every 10 tiles
+
+    for (let x = 0; x <= mapWidth; x += majorGridSpacing) {
+      graphics.moveTo(x, 0);
+      graphics.lineTo(x, mapHeight);
+    }
+
+    for (let y = 0; y <= mapHeight; y += majorGridSpacing) {
+      graphics.moveTo(0, y);
+      graphics.lineTo(mapWidth, y);
+    }
+
+    graphics.strokePath();
+
+    // Add grid info text with more details
+    this.scene.add
+      .text(
+        10,
+        10,
+        `Grid: ${tileWidth}x${tileHeight}px | Major: ${majorGridSpacing}px`,
+        {
+          fontSize: "16px",
+          color: "#00ff00",
+          backgroundColor: "#000000",
+          padding: { x: 5, y: 2 },
+        }
+      )
+      .setDepth(1001)
+      .setOrigin(0, 0);
+
+    // Add coordinate labels on major grid lines
+    this.addGridLabels(
+      tileWidth,
+      tileHeight,
+      mapWidth,
+      mapHeight,
+      majorGridSpacing
+    );
+  }
+
+  // Add coordinate labels to major grid lines
+  addGridLabels(tileWidth, tileHeight, mapWidth, mapHeight, majorGridSpacing) {
+    const labelStyle = {
+      fontSize: "12px",
+      color: "#00ff00",
+      backgroundColor: "#000000",
+      padding: { x: 2, y: 1 },
+    };
+
+    // Add X-axis labels (every 10 tiles)
+    for (let x = 0; x <= mapWidth; x += majorGridSpacing) {
+      const tileX = x / tileWidth;
+      this.scene.add
+        .text(x + 2, 2, `${tileX}`, labelStyle)
+        .setDepth(1001)
+        .setOrigin(0, 0);
+    }
+
+    // Add Y-axis labels (every 10 tiles)
+    for (let y = 0; y <= mapHeight; y += majorGridSpacing) {
+      const tileY = y / tileHeight;
+      this.scene.add
+        .text(2, y + 2, `${tileY}`, labelStyle)
+        .setDepth(1001)
+        .setOrigin(0, 0);
     }
   }
 }
