@@ -417,6 +417,24 @@ export class DialogManager {
           this.scene.player.gold += action.amount;
           console.log(`Gave gold: ${action.amount}`);
           break;
+        case "startCombat":
+          if (
+            this.scene.sceneManager &&
+            this.scene.sceneManager.combatManager
+          ) {
+            this.scene.sceneManager.combatManager.startCombat(
+              action.combatData
+            );
+          }
+          break;
+        case "fleeCombat":
+          if (
+            this.scene.sceneManager &&
+            this.scene.sceneManager.combatManager
+          ) {
+            this.scene.sceneManager.combatManager.fleeCombat();
+          }
+          break;
       }
     }
   }

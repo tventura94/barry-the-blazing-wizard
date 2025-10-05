@@ -48,6 +48,11 @@ export class House1 extends Scene {
         this.sceneManager.checkPassThroughAreas();
       }
 
+      // Update combat manager
+      if (this.sceneManager.combatManager) {
+        this.sceneManager.combatManager.update();
+      }
+
       // Manual screen edge detection (backup method)
       if (this.player.sprite.y < 0) {
         this.scene.start("StarterArea");

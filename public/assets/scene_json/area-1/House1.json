@@ -61,7 +61,7 @@
       "y": 200,
       "texture": "oak-wall",
       "scale": 0.5,
-      "depth": 100,
+      "depth": 50,
       "physics": {
         "bodies": [
           {
@@ -80,6 +80,37 @@
     }
   ],
   "npcs": [],
+  "combatNPCs": [
+    {
+      "id": "guitar-warrior",
+      "x": 300,
+      "y": 100,
+      "texture": "npc1",
+      "scale": 0.1,
+      "depth": 110,
+      "facingDirection": "down",
+      "lineOfSightAngle": 90,
+      "lineOfSightDistance": 120,
+
+      "combatData": {
+        "name": "Guitar Warrior",
+        "health": 80,
+        "attack": 18,
+        "defense": 8,
+        "speed": 8
+      },
+      "patrolData": {
+        "waypoints": [
+          { "x": 300, "y": 300 },
+          { "x": 400, "y": 300 },
+          { "x": 400, "y": 250 },
+          { "x": 300, "y": 250 }
+        ],
+        "speed": 30,
+        "waitTime": 2000
+      }
+    }
+  ],
   "player": {
     "x": 512,
     "y": 380,

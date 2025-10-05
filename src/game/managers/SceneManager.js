@@ -1,6 +1,7 @@
 import { BuildingManager } from "./BuildingManager.js";
 import { PropManager } from "./PropManager.js";
 import { NPCManager } from "./NPCManager.js";
+import { CombatManager } from "./CombatManager.js";
 import { DialogManager } from "./DialogManager/DialogManager.js";
 import { PlayerInitializer } from "../player_barry/playerInitializer.js";
 
@@ -10,6 +11,7 @@ export class SceneManager {
     this.buildingManager = new BuildingManager(scene);
     this.propManager = new PropManager(scene);
     this.npcManager = new NPCManager(scene);
+    this.combatManager = new CombatManager(scene);
     this.dialogManager = new DialogManager(scene);
     this.playerInBuilding = null; // Track which building the player is currently near
     this.playerOriginalDepth = null; // Will be set from JSON data
@@ -27,6 +29,9 @@ export class SceneManager {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const levelData = await response.json();
+
+    // Store level data for access by other managers
+    this.levelData = levelData;
 
     // Create level from JSON data
     this.createLevelFromData(levelData);
@@ -58,6 +63,10 @@ export class SceneManager {
 
     // Create NPCs from data using NPCManager
     this.scene.npcs = this.npcManager.createNPCsFromLevelData(levelData);
+
+    // Create combat NPCs from data using CombatManager
+    this.scene.combatNPCs =
+      this.combatManager.createCombatNPCsFromLevelData(levelData);
 
     // Initialize player
     this.scene.playerInitializer = new PlayerInitializer(this.scene);
@@ -241,6 +250,7 @@ export class SceneManager {
     this.buildingManager.clearBuildings(this.scene.buildings);
     this.propManager.clearProps();
     this.npcManager.clearNPCs();
+    this.combatManager.clearCombatNPCs();
     if (
       this.scene.player &&
       this.scene.player.sprite &&
